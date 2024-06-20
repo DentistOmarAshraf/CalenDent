@@ -15,8 +15,12 @@ class test_basemodel(unittest.TestCase):
 
     def setUp(self):
         """Setting up models"""
+        self.keyValue = {"id": "1",
+                         "created_at": datetime.now().isoformat(),
+                         "updated_at": datetime.now().isoformat()}
         self.first = BaseModel()
         self.sec = BaseModel()
+        self.third = BaseModel(**(self.keyValue))
 
     @classmethod
     def tearDownClass(self):
@@ -25,6 +29,11 @@ class test_basemodel(unittest.TestCase):
             shutil.rmtree("models/__pycache__")
         except Exception as e:
             print(e)
+
+    def test_type_of_instance(self):
+        """type of instance"""
+        self.assertIsInstance(self.first, BaseModel)
+        self.assertIsInstance(self.sec, BaseModel)
 
     def test_uuid_exists(self):
         """UUID exists in class"""
@@ -67,3 +76,11 @@ class test_basemodel(unittest.TestCase):
         to_comp["updated_at"] = self.first.updated_at.isoformat()
 
         self.assertEqual(self.first.to_dict(), to_comp)
+
+    def test_constructor_with_args(self):
+        """testing kwargs in construction"""
+        self.assertEqual(self.third.id, self.keyValue["id"])
+        self.assertEqual(self.third.created_at.isoformat(),
+                         self.keyValue["created_at"])
+        self.assertEqual(self.third.updated_at.isoformat(),
+                         self.keyValue["updated_at"])

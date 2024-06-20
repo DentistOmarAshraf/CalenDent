@@ -4,6 +4,7 @@ BaseModel
 """
 
 import uuid
+import models
 from datetime import datetime
 
 
@@ -27,6 +28,7 @@ class BaseModel:
                     setattr(self, key, value)
 
     def __str__(self):
+        """String represntaion of instance"""
         return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
 
     def to_dict(self):
@@ -36,3 +38,13 @@ class BaseModel:
         obj_info["created_at"] = self.created_at.isoformat()
         obj_info["updated_at"] = self.updated_at.isoformat()
         return obj_info
+
+    def save(self):
+        """Using Storage engine to save instance"""
+        self.updated_at = datetime.now()
+        models.storage.new(self)
+        models.storage.save()
+
+    def delete(self):
+        """Using Storage engine to delete instance"""
+        models.storage.delete(self)
