@@ -70,7 +70,7 @@ class test_basemodel(unittest.TestCase):
 
     def test_to_dict(self):
         """to_dict() return correct value"""
-        to_comp = {}
+        to_comp = self.first.__dict__.copy()
         to_comp["__class__"] = self.first.__class__.__name__
         to_comp["created_at"] = self.first.created_at.isoformat()
         to_comp["updated_at"] = self.first.updated_at.isoformat()

@@ -3,6 +3,14 @@
 FileStorage Model
 """
 from models.base_model import BaseModel
+from models.user import User
+from models.address import Address
+from models.city import City
+from models.neighborhood import Neighborhood
+from models.review import Review
+from models.clinic import Clinic
+from models.reservation import Reservation
+from models.service import Service
 import json
 
 
@@ -32,7 +40,10 @@ class FileStorage:
 
     def reload(self):
         """Reload from JSON and save in __object"""
-        classes = {"BaseModel": BaseModel}
+        classes = {"BaseModel": BaseModel, "User": User, "Address": Address,
+                   "City": City, "Review": Review, "Clinic": Clinic,
+                   "Reservation": Reservation, "Service": Service,
+                   "Neighborhood": Neighborhood}
         try:
             with open(FileStorage.__file_path, "r") as f:
                 reloaded = json.load(f)

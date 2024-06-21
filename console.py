@@ -8,7 +8,14 @@ import cmd
 import sys
 from models.__init__ import storage
 from models.base_model import BaseModel
-
+from models.user import User
+from models.address import Address
+from models.city import City
+from models.neighborhood import Neighborhood
+from models.review import Review
+from models.clinic import Clinic
+from models.reservation import Reservation
+from models.service import Service
 
 class CALENDENTCommand(cmd.Cmd):
     """
@@ -17,12 +24,15 @@ class CALENDENTCommand(cmd.Cmd):
 
     prompt = '(CalenDent) '
 
-    valid_classes = {"BaseModel": BaseModel}
+    valid_classes = {"BaseModel": BaseModel, "User": User, "Address": Address,
+                     "City": City, "Review": Review, "Clinic": Clinic,
+                     "Reservation": Reservation, "Service": Service,
+                     "Neighborhood": Neighborhood}
     data = storage.all()
 
     def help_help(self):
         """Overwrite of super class help def"""
-        print('This is an Airbnb clone created using Python, OOP')
+        print('This is a CalenDent created using Python, OOP')
         print('and other concepts learned on ALX.')
 
     def do_quit(self, line):
@@ -30,7 +40,7 @@ class CALENDENTCommand(cmd.Cmd):
         exit()
 
     def help_quit(self):
-        print('testtttt')
+        print('exit cmd')
         print()
 
     def do_EOF(self, line):

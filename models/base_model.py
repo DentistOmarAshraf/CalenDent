@@ -18,6 +18,9 @@ class BaseModel:
         self.updated_at = datetime.now()
         if kwargs:
             for key, value in kwargs.items():
+                if key == "id":
+                    self.id = value
+                    continue
                 if key == "created_at":
                     self.created_at = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
                     continue
@@ -33,7 +36,7 @@ class BaseModel:
 
     def to_dict(self):
         """making dict of class to saved"""
-        obj_info = {}
+        obj_info = self.__dict__.copy()
         obj_info["__class__"] = self.__class__.__name__
         obj_info["created_at"] = self.created_at.isoformat()
         obj_info["updated_at"] = self.updated_at.isoformat()
