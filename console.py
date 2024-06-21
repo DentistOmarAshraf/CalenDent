@@ -12,7 +12,7 @@ from models.base_model import BaseModel
 
 class CALENDENTCommand(cmd.Cmd):
     """
-    HBNBCommand class
+    CALENDENTCommand class
     """
 
     prompt = '(CalenDent) '
