@@ -22,10 +22,12 @@ class BaseModel:
                     self.id = value
                     continue
                 if key == "created_at":
-                    self.created_at = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
+                    self.created_at = datetime.strptime(value,
+                                                        '%Y-%m-%dT%H:%M:%S.%f')
                     continue
                 if key == "updated_at":
-                    self.updated_at = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
+                    self.updated_at = datetime.strptime(value,
+                                                        '%Y-%m-%dT%H:%M:%S.%f')
                     continue
                 if key != "__class__":
                     setattr(self, key, value)
