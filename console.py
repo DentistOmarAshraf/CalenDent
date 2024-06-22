@@ -16,6 +16,7 @@ from models.review import Review
 from models.clinic import Clinic
 from models.reservation import Reservation
 from models.service import Service
+from models.role import Role
 
 class CALENDENTCommand(cmd.Cmd):
     """
@@ -27,7 +28,7 @@ class CALENDENTCommand(cmd.Cmd):
     valid_classes = {"BaseModel": BaseModel, "User": User, "Address": Address,
                      "City": City, "Review": Review, "Clinic": Clinic,
                      "Reservation": Reservation, "Service": Service,
-                     "Neighborhood": Neighborhood}
+                     "Role": Role, "Neighborhood": Neighborhood}
     data = storage.all()
 
     def help_help(self):

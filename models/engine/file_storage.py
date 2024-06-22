@@ -11,6 +11,7 @@ from models.review import Review
 from models.clinic import Clinic
 from models.reservation import Reservation
 from models.service import Service
+from models.role import Role
 import json
 
 
@@ -43,7 +44,7 @@ class FileStorage:
         classes = {"BaseModel": BaseModel, "User": User, "Address": Address,
                    "City": City, "Review": Review, "Clinic": Clinic,
                    "Reservation": Reservation, "Service": Service,
-                   "Neighborhood": Neighborhood}
+                   "Role": Role, "Neighborhood": Neighborhood}
         try:
             with open(FileStorage.__file_path, "r") as f:
                 reloaded = json.load(f)
