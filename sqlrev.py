@@ -2,9 +2,10 @@
 
 from sqlalchemy import Column, String, Integer, create_engine, ForeignKey, Table
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
+from os import getenv
 
-
-engine = create_engine("mysql+mysqldb://omar:9344725054@localhost:3306/newdb")
+pwd = getenv("pwd")
+engine = create_engine(f"mysql+mysqldb://omar:{pwd}@localhost:3306/newdb")
 
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -68,6 +69,17 @@ class User(Base):
     reviews = relationship("Review", cascade="all, delete", back_populates="user")
     reservation = relationship("Reservation", cascade="all, delete",
             back_populates="user")
+    role = relationship("Role", secondary="user_role", back_populates="user")
+
+user_role = Table("user_role", Base.metadata,
+        Column("user_id", ForeignKey("user.id"), primary_key=True),
+        Column("role_id", ForeignKey("role.id"), primary_key=True))
+
+class Role(Base):
+    __tablename__ = "role"
+    id = Column(Integer, primary_key=True)
+    name = Column(String(60))
+    user = relationship("User", secondary="user_role", back_populates="role")
 
 class City(Base):
     __tablename__ = "city"
@@ -106,8 +118,14 @@ place_1.addresses.append(mkan_1)
 place_1.addresses.append(mkan_2)
 place_1.addresses.append(mkan_3)
 
+normal_user = Role(id=1, name="Normal")
+doctor_user = Role(id=2, name="Doctor")
+
 omar = User(id=1, name="omar")
+omar.role.append(normal_user)
+omar.role.append(doctor_user)
 nada = User(id=2, name="nada")
+nada.role.append(normal_user)
 omar.address = mkan_1
 nada.address = mkan_3
 
@@ -141,4 +159,6 @@ print(dental.services[0].name)
 print(dental.services[1].name)
 print(mkan_2.clinics)
 print(mkan_1.users)
+print(omar.role)
+print(nada.role)
 session.commit()
