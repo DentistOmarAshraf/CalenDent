@@ -4,7 +4,7 @@ from sqlalchemy import Column, String, Integer, create_engine, ForeignKey, Table
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 from os import getenv
 
-pwd = getenv("pwd")
+pwd = getenv("PWD")
 engine = create_engine(f"mysql+mysqldb://omar:{pwd}@localhost:3306/newdb")
 
 Session = sessionmaker(bind=engine)
