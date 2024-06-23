@@ -40,7 +40,7 @@ class Review(Base):
 
 
 clinic_service = Table("clinic_service", Base.metadata,
-        Column("serivce_id", Integer, ForeignKey("service.id"), primary_key=True),
+        Column("service_id", Integer, ForeignKey("service.id"), primary_key=True),
         Column("clinic_id", Integer, ForeignKey("clinic.id"), primary_key=True))
 
 
@@ -51,7 +51,7 @@ class Clinic(Base):
     user_id = Column(Integer, ForeignKey("user.id"))
     address_id = Column(Integer, ForeignKey("address.id"))
     user = relationship("User", back_populates="clinic")
-    address = relationship("Address", cascade="all, delete")
+    address = relationship("Address", cascade="all, delete", back_populates="clinics")
     reviews = relationship("Review", cascade="all, delete", back_populates="clinic")
     reservations = relationship("Reservation", back_populates="clinic",
                 cascade="all, delete")
@@ -63,7 +63,7 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(60))
     address_id = Column(Integer, ForeignKey("address.id"))
-    address = relationship("Address", cascade="all, delete")
+    address = relationship("Address", cascade="all, delete", back_populates="users")
     clinic = relationship("Clinic", cascade="all, delete", back_populates="user")
     reviews = relationship("Review", cascade="all, delete", back_populates="user")
     reservation = relationship("Reservation", cascade="all, delete",
@@ -90,6 +90,8 @@ class Address(Base):
     name = Column(String(60))
     neighborhood_id = Column(Integer, ForeignKey("neighborhood.id"))
     neighborhood = relationship("Neighborhood", back_populates="addresses")
+    users = relationship("User", back_populates="address")
+    clinics = relationship("Clinic", back_populates="address")
 
 Base.metadata.create_all(engine)
 
@@ -137,4 +139,6 @@ print(new_res.user.name)
 print(new_res.clinic.name)
 print(dental.services[0].name)
 print(dental.services[1].name)
+print(mkan_2.clinics)
+print(mkan_1.users)
 session.commit()
