@@ -11,8 +11,13 @@ from models.review import Review
 from models.clinic import Clinic
 from models.reservation import Reservation
 from models.service import Service
-from models.role import Role
 import json
+
+
+classes = {"BaseModel": BaseModel, "User": User, "Address": Address,
+           "City": City, "Review": Review, "Clinic": Clinic,
+           "Reservation": Reservation, "Service": Service,
+           "Neighborhood": Neighborhood}
 
 
 class FileStorage:
@@ -26,9 +31,16 @@ class FileStorage:
         val = obj
         FileStorage.__object[key] = val
 
-    def all(self):
+    def all(self, cls=None):
         """Return Data reloaded from JSON"""
-        return FileStorage.__object
+        if cls is None:
+            return FileStorage.__object
+        else:
+            to_ret = {}
+            for key, value in FileStorage.__object.items():
+                if cls == value.__class__ or cls == value.__class__.__name__:
+                    to_ret[key] = value
+            return to_ret
 
     def save(self):
         """Save data in __object into JSON file"""
@@ -41,10 +53,6 @@ class FileStorage:
 
     def reload(self):
         """Reload from JSON and save in __object"""
-        classes = {"BaseModel": BaseModel, "User": User, "Address": Address,
-                   "City": City, "Review": Review, "Clinic": Clinic,
-                   "Reservation": Reservation, "Service": Service,
-                   "Role": Role, "Neighborhood": Neighborhood}
         try:
             with open(FileStorage.__file_path, "r") as f:
                 reloaded = json.load(f)

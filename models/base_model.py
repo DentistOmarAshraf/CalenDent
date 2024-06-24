@@ -5,11 +5,26 @@ BaseModel
 
 import uuid
 import models
+from os import getenv
 from datetime import datetime
+from sqlalchemy.orm import declarative_base
+from sqlalchemy import Column, String, Integer, DateTime
+
+
+if models.storage_t == "db":
+    Base = declarative_base()
+else:
+    Base = object
 
 
 class BaseModel:
     """BaseModel for all CalenDent Models"""
+
+    if models.storage_t == "db":
+        """This will be inhertied by all child classes of BaseModel"""
+        id = Column(String(60), primary_key=True)
+        created_at = Column(DateTime, default=datetime.utcnow)
+        updated_at = Column(DateTime, default=datetime.utcnow)
 
     def __init__(self, *args, **kwargs):
         """Constructor Instance"""
@@ -34,7 +49,10 @@ class BaseModel:
 
     def __str__(self):
         """String represntaion of instance"""
-        return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
+        dic = self.__dict__.copy()
+        if "_sa_instance_state" in dic:
+            del (dic["_sa_instance_state"])
+        return f"[{self.__class__.__name__}] ({self.id}) {dic}"
 
     def to_dict(self):
         """making dict of class to saved"""
@@ -42,6 +60,8 @@ class BaseModel:
         obj_info["__class__"] = self.__class__.__name__
         obj_info["created_at"] = self.created_at.isoformat()
         obj_info["updated_at"] = self.updated_at.isoformat()
+        if "_sa_instance_state" in obj_info:
+            del (obj_info["_sa_instance_state"])
         return obj_info
 
     def save(self):
