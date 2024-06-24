@@ -8,6 +8,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Enum
 from sqlalchemy.orm import relationship
 import enum
+import hashlib
 
 
 class RoleType(enum.Enum):
@@ -23,7 +24,7 @@ class User(BaseModel, Base):
 
     if getenv("CALEN_STORAGE_TYPE") == "db":
         email = Column(String(60), nullable=False)
-        password = Column(String(60), nullable=False)
+        __password = Column('password', String(60), nullable=False)
         first_name = Column(String(60))
         last_name = Column(String(60))
         address_id = Column(String(60), ForeignKey("address.id"))
@@ -42,3 +43,11 @@ class User(BaseModel, Base):
         password = ""
         first_name = ""
         last_name = ""
+
+    @property
+    def password(self):
+        return self.__password
+
+    @password.setter
+    def password(self, passwd):
+        self.__password = hashlib.md5(passwd.encode()).hexdigest()
