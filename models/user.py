@@ -40,7 +40,7 @@ class User(BaseModel, Base):
 
     if getenv("CALEN_STORAGE_TYPE") != "db":
         email = ""
-        password = ""
+        __password = ""
         first_name = ""
         last_name = ""
 
