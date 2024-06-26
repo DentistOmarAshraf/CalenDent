@@ -17,10 +17,10 @@ def new_user():
     except Exception:
         return make_response("Not A JSON", 400)
 
-    if "email" not in data.keys():
+    if "email" not in data.keys() or not len(data["email"]):
         return make_response("email missing", 400)
 
-    if "password" not in data.keys():
+    if "password" not in data.keys() or not len(data["password"]):
         return make_response("password missing", 400)
 
     try:

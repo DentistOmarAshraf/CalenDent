@@ -1,9 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<title>SIGN UP</title>
-	</head>
-	<body>
+{% extends "layout.html" %}
+{% block content %}
 		<form action="/signup" method="POST">
 			<fieldset>
 				<legend>SIGN UP:</legend>
@@ -18,5 +14,4 @@
 				<input type="submit" value="Submit">
 			</fieldset>
 		</form>
-	</body>
-</html>
+{% endblock %}

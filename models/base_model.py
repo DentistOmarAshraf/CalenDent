@@ -52,6 +52,8 @@ class BaseModel:
         dic = self.__dict__.copy()
         if "_sa_instance_state" in dic:
             del (dic["_sa_instance_state"])
+        if "_password" in dic:
+            del (dic["_password"])
         return f"[{self.__class__.__name__}] ({self.id}) {dic}"
 
     def to_dict(self):

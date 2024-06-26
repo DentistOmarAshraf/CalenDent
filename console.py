@@ -16,7 +16,6 @@ from models.review import Review
 from models.clinic import Clinic
 from models.reservation import Reservation
 from models.service import Service
-from models.role import Role
 
 class CALENDENTCommand(cmd.Cmd):
     """
@@ -28,7 +27,7 @@ class CALENDENTCommand(cmd.Cmd):
     valid_classes = {"BaseModel": BaseModel, "User": User, "Address": Address,
                      "City": City, "Review": Review, "Clinic": Clinic,
                      "Reservation": Reservation, "Service": Service,
-                     "Role": Role, "Neighborhood": Neighborhood}
+                     "Neighborhood": Neighborhood}
     data = storage.all()
 
     def help_help(self):
@@ -67,6 +66,30 @@ class CALENDENTCommand(cmd.Cmd):
 
         get_class = self.valid_classes[args[0]]
         var_class = get_class()
+
+        if len(args) > 1:
+            param = args[1:]
+            for x in param:
+                key = x[:x.find('=')]
+                value = x[x.find('=')+1:]
+                if value[0] == '"':
+                    value = value[1:]
+                if value[len(value)-1] == '"':
+                    value = value[:len(value)-1]
+                if value and len(value) != 0:
+                    if '"' in value:
+                        value = value.replace('"', '')
+                    if '_' in value:
+                        value = value.replace("_", " ")
+                    if '.' in value:
+                        try:
+                            value = float(value)
+                        except Exception:
+                            pass
+#                    elif value[0] != '0' and value.isdigit():
+#                        value = int(value)
+                    setattr(var_class, key, value)
+
         var_class.save()
         print(var_class.id)
 

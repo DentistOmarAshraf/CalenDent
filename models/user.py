@@ -25,12 +25,13 @@ class User(BaseModel, Base):
     if getenv("CALEN_STORAGE_TYPE") == "db":
         email = Column(String(60), nullable=False, unique=True)
         _password = Column('password', String(128), nullable=False)
+        username = Column(String(128), nullable=False)
         first_name = Column(String(60))
         last_name = Column(String(60))
         address_id = Column(String(60), ForeignKey("address.id"))
         address = relationship("Address", back_populates="users",
                                cascade="all, delete")
-        role = Column(Enum(RoleType))
+        role = Column(Enum(RoleType), nullable=False)
         clinics = relationship("Clinic", back_populates="user",
                                cascade="all, delete")
         reservations = relationship("Reservation", back_populates="user",

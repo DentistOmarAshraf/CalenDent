@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 @app.route("/signup", strict_slashes=False, methods=["GET"])
 def sign_up():
-    return render_template("signup.html")
+    return render_template("signup.html", title="SignUp")
 
 
 @app.route("/signup", strict_slashes=False, methods=["POST"])
@@ -26,7 +26,8 @@ def sign_up_register():
         return res.json()
 
     else:
-        return res.json()
+        print(res.text)
+        return res.text
 
 
 
