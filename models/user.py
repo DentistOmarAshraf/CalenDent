@@ -19,18 +19,10 @@ class RoleType(enum.Enum):
 
 class User(BaseModel, Base):
     """User Class"""
-    @property
-    def password(self):
-        raise AttributeError("password is NOT READABLE")
 
-    @password.setter
-    def password(self, passwd):
-        salt = bcrypt.gensalt()
-        hashed = bcrypt.hashpw(passwd.encode('utf-8'), salt)
-        self._password = hashed.decode('utf-8')
+    __tablename__ = "user"
 
     if getenv("CALEN_STORAGE_TYPE") == "db":
-        __tablename__ = "user"
         email = Column(String(60), nullable=False, unique=True)
         _password = Column('password', String(128), nullable=False)
         first_name = Column(String(60))
@@ -51,6 +43,16 @@ class User(BaseModel, Base):
         _password = ""
         first_name = ""
         last_name = ""
+
+    @property
+    def password(self):
+        raise AttributeError("password is NOT READABLE")
+
+    @password.setter
+    def password(self, passwd):
+        salt = bcrypt.gensalt()
+        hashed = bcrypt.hashpw(passwd.encode('utf-8'), salt)
+        self._password = hashed.decode('utf-8')
 
     def verify_password(self, password):
         """Check Password"""
