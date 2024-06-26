@@ -62,7 +62,9 @@ class BaseModel:
         obj_info["updated_at"] = self.updated_at.isoformat()
         if "_sa_instance_state" in obj_info:
             del (obj_info["_sa_instance_state"])
-        return obj_info
+        if "_password" in obj_info:
+            del (obj_info["_password"])
+        return dict(sorted(obj_info.items()))
 
     def save(self):
         """Using Storage engine to save instance"""

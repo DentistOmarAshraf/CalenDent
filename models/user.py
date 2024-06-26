@@ -8,7 +8,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Enum
 from sqlalchemy.orm import relationship
 import enum
-import hashlib
+import bcrypt
 
 
 class RoleType(enum.Enum):
@@ -19,12 +19,20 @@ class RoleType(enum.Enum):
 
 class User(BaseModel, Base):
     """User Class"""
+    @property
+    def password(self):
+        raise AttributeError("password is NOT READABLE")
 
-    __tablename__ = "user"
+    @password.setter
+    def password(self, passwd):
+        salt = bcrypt.gensalt()
+        hashed = bcrypt.hashpw(passwd.encode('utf-8'), salt)
+        self._password = hashed.decode('utf-8')
 
     if getenv("CALEN_STORAGE_TYPE") == "db":
-        email = Column(String(60), nullable=False)
-        __password = Column('password', String(60), nullable=False)
+        __tablename__ = "user"
+        email = Column(String(60), nullable=False, unique=True)
+        _password = Column('password', String(128), nullable=False)
         first_name = Column(String(60))
         last_name = Column(String(60))
         address_id = Column(String(60), ForeignKey("address.id"))
@@ -40,14 +48,11 @@ class User(BaseModel, Base):
 
     if getenv("CALEN_STORAGE_TYPE") != "db":
         email = ""
-        __password = ""
+        _password = ""
         first_name = ""
         last_name = ""
 
-    @property
-    def password(self):
-        return self.__password
-
-    @password.setter
-    def password(self, passwd):
-        self.__password = hashlib.md5(passwd.encode()).hexdigest()
+    def verify_password(self, password):
+        """Check Password"""
+        return bcrypt.checkpw(password.encode('utf-8'),
+                              self._password.encode('utf-8'))
