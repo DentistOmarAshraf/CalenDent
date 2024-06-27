@@ -78,6 +78,21 @@ class DBstorage:
         Session = sessionmaker(bind=DBstorage.__engine, expire_on_commit=False)
         DBstorage.__session = scoped_session(Session)
 
+    def get(self, cls, id):
+        """Getting instance by id"""
+        if cls in classes:
+            to_ret = DBstorage.__session.query(cls).filter(cls.id == id).all()
+            if to_ret:
+                return to_ret[0]
+        return None
+
+    def count(self, cls=None):
+        """Get Count of instance in DB storage"""
+        if cls:
+            data = DBstorage.all(self, cls)
+            return len(data)
+        return len(DBstorage.all())
+
     def close(self):
         """Remove Current Session"""
         DBstorage.__session.remove()

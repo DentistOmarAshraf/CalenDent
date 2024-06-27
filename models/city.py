@@ -15,7 +15,7 @@ class City(BaseModel, Base):
     __tablename__ = "city"
 
     if getenv("CALEN_STORAGE_TYPE") == "db":
-        name = Column(String(60), nullable=False)
+        name = Column(String(60), nullable=False, unique=True)
         neighborhoods = relationship("Neighborhood", back_populates="city",
                                      cascade="all, delete")
 
