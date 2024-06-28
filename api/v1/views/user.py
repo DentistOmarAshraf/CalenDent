@@ -27,7 +27,8 @@ def new_user():
         new_user = User(**(data))
         storage.new(new_user)
         storage.save()
-    except IntegrityError:
+    except IntegrityError as e:
+        print(e)
         dt = {"error": "email present"}
         res = make_response(dumps(dt), 400)
         res.headers["Content-type"] = "application/json"

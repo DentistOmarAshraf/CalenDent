@@ -86,6 +86,19 @@ class DBstorage:
                 return to_ret[0]
         return None
 
+    def get_by(self, cls, key, value):
+        """Getting instance by attribute"""
+        if cls in classes:
+            to_ret = (
+                DBstorage.__session
+                .query(cls)
+                .filter(getattr(cls, key) == value)
+                .all()
+                )
+            if to_ret:
+                return to_ret[0]
+        return None
+
     def count(self, cls=None):
         """Get Count of instance in DB storage"""
         if cls:
