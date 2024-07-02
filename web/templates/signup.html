@@ -1,22 +1,36 @@
 {% extends "layout.html" %}
 {% block content %}
-		<form action="/signup" method="POST">
-			{{ form.hidden_tag() }}
-			<fieldset>
-				<legend>SIGN UP:</legend>
-				{{ form.username.label }}<br>
-				{{ form.username }}<br>
-				{{ form.first_name.label }}<br>
-				{{ form.first_name }}<br>
-				{{ form.last_name.label }}<br>
-				{{ form.last_name }}<br>
-				{{ form.email.label }}<br>
-				{{ form.email }}<br>
-				{{ form.password.label }}<br>
-				{{ form.password }}<br>
-				{{ form.confirm_password.label }}<br>
-				{{ form.confirm_password }}<br>
-				{{ form.submit }}
+	<form action="/signup" method="POST">
+		{{ form.hidden_tag() }}
+		<fieldset>
+			<legend>SIGN UP:</legend>
+			{{ form.username.label }}<br>
+			{{ form.username }}<br>
+			{{ form.first_name.label }}<br>
+			{{ form.first_name }}<br>
+			{{ form.last_name.label }}<br>
+			{{ form.last_name }}<br>
+			{{ form.address.label }}<br>
+			{{ form.address }}<br>
+			<label for="city">City</label><br>
+			 <select name="city" id="city">
+			    <option value="" disabeld selected>--Choose City--</option>
+			    {% for city in cities %}
+			    <option id={{ city.id }} value={{ city.id }}>{{ city.name }}</option>
+			    {% endfor %}
+			 </select><br>
+			<label for="neighborhood">Neighborhood</label><br>
+			 <select name="neighborhood" id="neighborhood">
+			   <option value="" disabeld selected>--Choose Neighborhood--</option>
+
+			 </select><br>
+			{{ form.email.label }}<br>
+			{{ form.email }}<br>
+			{{ form.password.label }}<br>
+			{{ form.password }}<br>
+			{{ form.confirm_password.label }}<br>
+			{{ form.confirm_password }}<br>
+			{{ form.submit }}
 			</fieldset>
 		</form>
 {% endblock %}
