@@ -3,14 +3,10 @@
 from functools import wraps
 from flask import Blueprint
 
-app_views = Blueprint("app", __name__, url_prefix="/api/v1")
-
-from .user import *
-from .city import *
-from .neighborhood import *
-
 
 API_KEY = "API_SECRET_KEY"
+
+app_views = Blueprint("app", __name__, url_prefix="/api/v1")
 
 def check_api_key(func):
     """WARPPER Functiont to Check that web_app is the reqest Sender"""
@@ -21,3 +17,8 @@ def check_api_key(func):
             return make_response(dumps({"error": "unauthorized"}), 403)
         return func(*args, **kwargs)
     return intern_func
+
+from .user import *
+from .city import *
+from .neighborhood import *
+from .clinic import *

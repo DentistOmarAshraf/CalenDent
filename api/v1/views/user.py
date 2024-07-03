@@ -6,7 +6,7 @@ User API
 from .__init__ import app_views, API_KEY, check_api_key
 from flask import make_response, request, abort
 from models import storage
-from models.user import User
+from models.user import User, RoleType
 from models.neighborhood import Neighborhood
 from models.address import Address
 from json import dumps
@@ -70,7 +70,7 @@ def new_user():
                 username = data["username"],
                 first_name = data["first_name"],
                 last_name = data["last_name"],
-                role = "user"
+                role = RoleType.USER
                 )
         new_address = Address(text_address = data["address"])
         new_address.users.append(new_user)
@@ -88,6 +88,8 @@ def new_user():
     to_ret = new_user.to_dict()
     if "address" in to_ret.keys():
         del (to_ret["address"])
+    if "role" in to_ret.keys():
+        del (to_ret["role"])
     res = make_response(dumps(to_ret, indent=4), 201)
     res.headers["Content-type"] = "application/json"
     return res

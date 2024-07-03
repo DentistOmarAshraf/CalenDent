@@ -19,7 +19,7 @@ class Service(BaseModel, Base):
     __tablename__ = "service"
 
     if getenv("CALEN_STORAGE_TYPE") == "db":
-        name = Column(String(60), nullable=False)
+        name = Column(String(60), nullable=False, unique=True)
         clinics = relationship("Clinic", secondary="clinic_service",
                                back_populates="services")
 

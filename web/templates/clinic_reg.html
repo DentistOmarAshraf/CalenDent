@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block content %}
+		<form action="/clinic" method="POST">
+			{{ form.hidden_tag() }}
+			<fieldset>
+				<legend>Clinic Registration:</legend>
+				{{ form.name.label }}<br>
+				{{ form.name }}<br>
+				{{ form.address.label }}<br>
+				{{ form.address }}<br>
+				{{ form.visit_price.label }}<br>
+				{{ form.visit_price }}<br>
+				<label for="city">City</label><br>
+				 <select name="city" id="city" required>
+				   <option value="" disabled selected>--Choose City--</option>
+				   {% for city in cities %}
+				   <option id={{ city.id }} value={{ city.id }}>{{ city.name }}</option>
+				   {% endfor %}
+				 </select><br>
+				 <label for="neighborhood">Neighborhood</label><br>
+				  <select name="neighborhood" id="neighborhood" required>
+				    <option value="" disabled selected>--Choose Neighborhood--</option>
+
+				  </select><br>
+				{{ form.time_from.label }}<br>
+				{{ form.time_from }}<br>
+				{{ form.time_to.label }}<br>
+				{{ form.time_to }}<br>
+				<label for="service">Services</label><br>
+				{% for service in services %}
+				<input type="checkbox" id={{ service }} name="service.{{ service.id }}" value={{ service.id }}>
+				<label for={{ service.id }}> {{ service.name }}</label><br>
+				{% endfor %}
+				{{ form.submit }}
+			</fieldset>
+		</form>
+{% endblock %}

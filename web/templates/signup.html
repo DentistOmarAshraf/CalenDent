@@ -13,15 +13,15 @@
 			{{ form.address.label }}<br>
 			{{ form.address }}<br>
 			<label for="city">City</label><br>
-			 <select name="city" id="city">
-			    <option value="" disabeld selected>--Choose City--</option>
+			 <select name="city" id="city" required>
+			    <option value="" disabled selected>--Choose City--</option>
 			    {% for city in cities %}
 			    <option id={{ city.id }} value={{ city.id }}>{{ city.name }}</option>
 			    {% endfor %}
 			 </select><br>
 			<label for="neighborhood">Neighborhood</label><br>
-			 <select name="neighborhood" id="neighborhood">
-			   <option value="" disabeld selected>--Choose Neighborhood--</option>
+			 <select name="neighborhood" id="neighborhood" required>
+			   <option value="" disabled selected>--Choose Neighborhood--</option>
 
 			 </select><br>
 			{{ form.email.label }}<br>
