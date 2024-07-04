@@ -19,6 +19,8 @@ class Neighborhood(BaseModel, Base):
         city = relationship("City", back_populates="neighborhoods")
         addresses = relationship("Address", back_populates="neighborhood",
                                  cascade="all, delete")
+        clinics = relationship("Clinic", back_populates="neighborhood",
+                               cascade="all, delete")
 
     if getenv("CALEN_STORAGE_TYPE") != "db":
         name = ""

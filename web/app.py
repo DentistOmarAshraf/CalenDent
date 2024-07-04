@@ -44,7 +44,9 @@ def token_required(func):
             data = decode_token(token, app.secret_key)
             user_id = data["user_id"]
         except jwt.ExpiredSignatureError:
-            return make_response(redirect(url_for('sign_in')))
+            res = make_response(redirect(url_for('sign_in')))
+            res.set_cookie('jwt_token','', httponly=True, expires=0)
+            return res
         except jwt.InvalidTokenError:
             return make_response(redirect(url_for('sign_in')))
 
@@ -149,10 +151,9 @@ def logout(user_id):
     return response
 
 
-@app.route("/clinic", strict_slashes=False, methods=["GET"])
+@app.route("/clinic_reg", strict_slashes=False, methods=["GET"])
 @token_required
 def clinic_register(user_id):
-    print(user_id)
     services = []
     for key, value in storage.all(Service).items():
         services.append(value)
@@ -166,7 +167,7 @@ def clinic_register(user_id):
                             services=services, cities=cities)
 
 
-@app.route("/clinic", strict_slashes=False, methods=["POST"])
+@app.route("/clinic_reg", strict_slashes=False, methods=["POST"])
 @token_required
 def clinic_register_action(user_id):
     form = ClinicForm()

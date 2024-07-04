@@ -1,0 +1,9 @@
+header {
+	height: 100px;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	background: rgb(0,0,0);
+	background: linear-gradient(83deg, rgba(0,0,0,1) 13%, rgba(8,30,109,1) 96%);
+	padding: 0px;
+}

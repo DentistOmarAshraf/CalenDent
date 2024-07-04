@@ -5,7 +5,7 @@ Clinic API
 
 from .__init__ import app_views, API_KEY, check_api_key
 from models import storage
-from models.user import User
+from models.user import User, RoleType
 from models.clinic import Clinic
 from models.address import Address
 from models.neighborhood import Neighborhood
@@ -45,6 +45,7 @@ def add_clinic():
         new_address = Address(text_address=data["address"])
         the_neighborhood.addresses.append(new_address)
 
+        the_neighborhood.clinics.append(new_clinic)
         new_address.clinics.append(new_clinic)
         the_user.clinics.append(new_clinic)
 
@@ -55,6 +56,7 @@ def add_clinic():
         storage.new(new_address)
         storage.new(the_user)
         storage.new(the_neighborhood)
+        the_user.role = RoleType.DOCTOR
         storage.save()
     except IntegrityError as e:
         dt = {"error": "Clinic exists"}
@@ -73,6 +75,38 @@ def add_clinic():
         del (to_ret["opening_time"])
     if "closing_time" in to_ret.keys():
         del (to_ret["closing_time"])
+    if "neighborhood" in to_ret.keys():
+        del (to_ret["neighborhood"])
     res = make_response(dumps(to_ret, indent=4), 201)
+    res.headers["Content-type"] = "application/json"
+    return res
+
+@app_views.route("/neighborhood/<neighborhood_id>/clinics",
+                 strict_slashes=False, methods=["GET"])
+def get_clinics_in_neighborhood(neighborhood_id):
+    """GET all clinics in one neighborhood"""
+    the_neighborhood = storage.get(Neighborhood, neighborhood_id)
+    if not the_neighborhood:
+        abort(404)
+
+    to_ret = []
+    for clinic in the_neighborhood.clinics:
+        cl_dict = clinic.to_dict()
+        if "address" in cl_dict.keys():
+            del (cl_dict["address"])
+        if "services" in cl_dict.keys():
+            del (cl_dict["services"])
+        if "user" in cl_dict.keys():
+            del (cl_dict["user"])
+        if "opening_time" in cl_dict.keys():
+            del (cl_dict["opening_time"])
+        if "closing_time" in cl_dict.keys():
+            del (cl_dict["closing_time"])
+        if "neighborhood" in cl_dict.keys():
+            del (cl_dict["neighborhood"])
+        to_ret.append(cl_dict)
+    
+    print(to_ret)
+    res = make_response(dumps(to_ret, indent=4), 200)
     res.headers["Content-type"] = "application/json"
     return res

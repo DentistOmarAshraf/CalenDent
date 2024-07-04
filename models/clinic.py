@@ -21,8 +21,10 @@ class Clinic(BaseModel, Base):
         visit_price = Column(Float, default=200.00)
         user_id = Column(String(60), ForeignKey("user.id"))
         address_id = Column(String(60), ForeignKey("address.id"))
+        neighborhood_id = Column(String(60), ForeignKey("neighborhood.id"))
         user = relationship("User", back_populates="clinics")
         address = relationship("Address", back_populates="clinics")
+        neighborhood = relationship("Neighborhood", back_populates="clinics")
         services = relationship("Service", secondary="clinic_service",
                                 back_populates="clinics")
         reservations = relationship("Reservation", back_populates="clinic",

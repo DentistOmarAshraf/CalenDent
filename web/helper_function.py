@@ -21,4 +21,9 @@ def create_token(data, key, expire_date=None):
 
 def decode_token(token, key):
     """JWT token decode"""
-    return jwt.decode(token, key, algorithms=["HS256"])
+    try:
+        to_ret = jwt.decode(token, key, algorithms=["HS256"])
+    except jwt.ExpiredSignatureError:
+        raise jwt.ExpiredSignatureError("Signature has expired")
+
+    return to_ret
