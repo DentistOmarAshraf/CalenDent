@@ -6,6 +6,15 @@ body {
 	font-size: 14px;
 	font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
+div.container_logo{
+	padding-top: 30px;
+	display:flex;
+	justify-content: center;
+	align-items: center;
+}
+div.container_logo img{
+	width: 420px;
+}
 div.container {
 	max-width: 1000px;
 	top: 30px;
