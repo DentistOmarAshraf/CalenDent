@@ -89,24 +89,33 @@ def get_clinics_in_neighborhood(neighborhood_id):
     if not the_neighborhood:
         abort(404)
 
+    owner = request.args.get('owner')
     to_ret = []
-    for clinic in the_neighborhood.clinics:
-        cl_dict = clinic.to_dict()
-        if "address" in cl_dict.keys():
-            del (cl_dict["address"])
-        if "services" in cl_dict.keys():
-            del (cl_dict["services"])
-        if "user" in cl_dict.keys():
-            del (cl_dict["user"])
+    if owner:
+        clinics = storage.search_related(Clinic,"username", User, owner)
+        for clinic in clinics:
+            load = [clinic.user, clinic.address]
+            if clinic.neighborhood != the_neighborhood:
+                continue
+            else:
+                to_ret.append(clinic.to_dict())
+    else:
+        for clinic in the_neighborhood.clinics:
+            load = [clinic.user, clinic.address, clinic.neighborhood]
+            to_ret.append(clinic.to_dict())
+
+    for cl_dict in to_ret:
         if "opening_time" in cl_dict.keys():
-            del (cl_dict["opening_time"])
+            cl_dict["opening_time"] = cl_dict["opening_time"].strftime('%H:%M')
         if "closing_time" in cl_dict.keys():
-            del (cl_dict["closing_time"])
+            cl_dict["closing_time"] = cl_dict["closing_time"].strftime('%H:%M')
+        if "address" in cl_dict.keys():
+            cl_dict["address"] = cl_dict["address"].text_address
+        if "user" in cl_dict.keys():
+            cl_dict["user"] = f'{cl_dict["user"].first_name} {cl_dict["user"].last_name}'
         if "neighborhood" in cl_dict.keys():
-            del (cl_dict["neighborhood"])
-        to_ret.append(cl_dict)
+            cl_dict["neighborhood"] = cl_dict["neighborhood"].name
     
-    print(to_ret)
     res = make_response(dumps(to_ret, indent=4), 200)
     res.headers["Content-type"] = "application/json"
     return res

@@ -9,7 +9,11 @@
 	</head>
 	<body>
 		<header>
-			
+			{% if not user %}
+			<button class="sign_in"><a href="http://localhost:5000/signin">Sign In</a></button>
+			{% else %}
+			<button class="sign_in"><a href="http://localhost:5000/signin">{{ user.first_name }}</a></button>
+			{% endif %}
 		</header>
 		{% block content %}{% endblock %}
 	</body>

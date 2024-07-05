@@ -1,8 +1,35 @@
 {% extends "layout.html" %}
 {% block content %}
-	<H1> This is Home </H1>
-	{% if user %}
-		<h1>Hello, {{ user.first_name }}</h1>
-		<h2>Role : {{ user.role }}</h2>
-	{% endif %}
+<div class="container">
+	<section class="filter">
+		<div class="city">
+			<h3>City</h3>
+			<h4>&nbsp;</h4>
+			<ul class="city_popover">
+				<h5>Choose City</h5>
+				{% for city in cities %}
+				<li class="radio_input">
+					<input type="radio" name="city" value="{{ city.id }}">
+					<label for="city">{{ city.name }}</label>
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+		<div class="neighborhood">
+			<h3>Neighborhood</h3>
+			<h4>&nbsp;</h4>
+			<ul class="neighborhood_popover">
+				<h5>Choose neighborhood</h5>
+
+			</ul>
+		</div>
+		<div class="owner_search">
+			<input type="text" name="owner" placeholder="eg: Omar Ashraf">
+		</div>
+		<button type="button" class="search">
+			Search
+		</button>
+	</section>
+</div>
+<script type="text/javascript" src="../static/scripts/calen_2.js"></script>
 {% endblock %}

@@ -64,7 +64,9 @@ def home_page():
     else:
         user = None
 
-    return render_template("home.html", title="Home", user=user)
+    cities = storage.all(City).values()
+
+    return render_template("home.html", title="Home", user=user, cities=cities)
 
 @app.route("/signup", strict_slashes=False, methods=["GET"])
 def sign_up():

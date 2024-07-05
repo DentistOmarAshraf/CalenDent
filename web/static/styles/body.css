@@ -1,5 +1,117 @@
 body {
+	min-height: 2300px;
 	margin-top: 0px;
 	margin-right: 0px;
 	margin-left: 0px;
+	font-size: 14px;
+	font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+div.container {
+	max-width: 1000px;
+	top: 30px;
+	margin: auto;
+	position: relative;
+	background-color: white;
+}
+div.container .filter {
+	height: 70px;
+	width: 100%;
+	border: 1px solid #DDDDDD;
+	border-radius: 4px;
+	display: flex;
+	align-items: center;
+}
+section div {
+	width: 25%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+div.city, div.neighborhood {
+	border-right: 1px solid #DDDDDD;
+}
+div.city h3, div.neighborhood h3{
+	margin-left: 20%;
+	width: 80%;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+div.city h4, div.neighborhood h4{
+	margin-left: 20%;
+	width: 80%;
+	font-weight: 400;
+	margin-top: 0;
+}
+.city_popover, .neighborhood_popover {
+	display: None;
+}
+div.city:hover .city_popover,
+div.neighborhood:hover .neighborhood_popover{
+	display: block;
+	position: relative;
+	z-index: 1;
+	list-style: None;
+	margin: 0;
+	padding-top: 10%;
+	padding-left: 13%;
+	width: 87%;
+	min-height:200px;
+	border: 1px solid #DDDDDD;
+	border-radius: 4px;
+	background-color: #FAFAFA;
+	overflow: scroll;
+}
+.city_popover::-webkit-scrollbar{
+	width: 0px;
+}
+.neighborhood_popover::-webkit-scrollbar{
+	width: 0px;
+}
+div.city:hover  li:last-child{
+	padding-bottom: 10%;
+}
+div.neighborhood:hover li:last-child{
+	padding-bottom: 10%;
+}
+.city_popover h5, .neighborhood_popover h5{
+	margin: 0;
+	padding: 0;
+	padding-bottom: 20px;
+}
+.radio_input{
+	padding-bottom: 10px;
+}
+.owner_search{
+	display:flex;
+	align-items: center;
+	justify-content: center;
+	border-right: 1px solid #DDDDDD;
+}
+.owner_search input{
+	padding-left:5%;
+	border: 0px;
+	border-radius:4px;
+	width: 80%;
+	height: 50%;
+	background-color: #c6cbcc;
+	font-size: 15px;
+	font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+.owner_search input:focus{
+	outline: None;
+}
+button {
+        font-size: 18px;
+        color: #FFFFFF;
+        background-color: #164b8c;
+        position: absolute;
+        right: 30px;
+        width: 20%;
+        height: 48px;
+        border: 0px;
+        border-radius: 4px;
+}
+button:hover {
+        opacity: 90%;
 }

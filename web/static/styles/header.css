@@ -1,9 +1,37 @@
 header {
-	height: 100px;
+	height: 85px;
 	width: 100%;
 	display: flex;
 	align-items: center;
-	background: rgb(0,0,0);
-	background: linear-gradient(83deg, rgba(0,0,0,1) 13%, rgba(8,30,109,1) 96%);
+	background: rgb(214,219,228);
+	background: linear-gradient(83deg, rgba(214,219,228,1) 11%, rgba(45,66,140,1) 100%);
 	padding: 0px;
+}
+
+header::after {
+	content: '';
+	background: url('../../static/images/logo.png');
+	display: inline-block;
+	height: 96px;
+	width: 188px;
+	position: absolute;
+	left: 20px;
+	cursor: pointer;
+}
+button.sign_in {
+	width: 70px;
+	height: 40px;
+	position: absolute;
+	right: 0;
+	margin-right: 37px;
+	border-radius: 15%;
+	border: 0px;
+	background-color: #e6f0ef;
+	font-size: 14px;
+	font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+button a {
+	size: 20px;
+	color: black;
+	text-decoration: None;
 }

@@ -99,6 +99,31 @@ class DBstorage:
                 return to_ret[0]
         return None
 
+    def search(self, cls, column_name, query_string):
+        """search for instance a like query_string"""
+        query = f"%{query_string}%"
+        column = getattr(cls, column_name)
+        to_ret = (
+                DBstorage.__session
+                .query(cls)
+                .filter(column.like(query))
+                .all()
+                )
+        return to_ret
+
+    def search_related(self, cls, related_column, related_cls, query_string):
+        """Same as the above But search on related modules"""
+        query = f"%{query_string}%"
+        column = getattr(related_cls, related_column)
+        to_ret = (
+                DBstorage.__session
+                .query(cls)
+                .join(related_cls)
+                .filter(column.like(query))
+                .all()
+                )
+        return to_ret
+
     def count(self, cls=None):
         """Get Count of instance in DB storage"""
         if cls:
