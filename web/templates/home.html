@@ -12,7 +12,7 @@
 				<h5>Choose City</h5>
 				{% for city in cities %}
 				<li class="radio_input">
-					<input type="radio" name="city" value="{{ city.id }}">
+					<input type="radio" name="city" value="{{ city.id }}" class="{{ city.name }}">
 					<label for="city">{{ city.name }}</label>
 				</li>
 				{% endfor %}
@@ -27,11 +27,64 @@
 			</ul>
 		</div>
 		<div class="owner_search">
-			<input type="text" name="owner" placeholder="eg: Omar Ashraf">
+			<input type="text" name="owner" placeholder="Enter Doctor Name...">
 		</div>
 		<button type="button" class="search">
 			Search
 		</button>
 	</section>
+	<section class="doctor">
+		<div class="doctor_container">
+			<div class="photo_container">
+				<img src="'../../static/images/logo.png">
+			</div>
+			<div class="info_container">
+				<div class="clinic_name">
+					<i class="fa-solid fa-hospital"></i>
+					<h4>CalendDent</h4>
+				</div>
+				<div class="clinic_owner">
+					<i class="fa-solid fa-user-doctor"></i>
+					<h4>Omar Ashraf</h4>
+				</div>
+				<div class="clinic_address">
+					<i class="fa-solid fa-location-pin"></i>
+					<h4>Mokattam</h4>
+				</div>
+				<div class="clinic_city">
+					<i class="fa-solid fa-city"></i>
+					<h4>Cairo</h4>
+				</div>
+				<div class="clinic_neighborhood">
+					<i class="fa-solid fa-map-location"></i>
+					<h4>Mokattam</h4>
+				</div>
+				<div class="clinic_aval">
+					<i class="fa-solid fa-clock"></i>
+					<h4>from 17:00 to 22:00</h4>
+				</div>
+				<div class="clinic_visit">
+					<i class="fa-regular fa-dollar-sign"></i>
+					<h4>200</h4>
+				</div>
+
+			</div>
+		</div>
+		<div class="doctor_container">
+                        <div class="photo_container">
+				<img src="">
+                        </div>
+                        <div class="info_container">
+                        </div>
+                </div>
+		<div class="doctor_container">
+                        <div class="photo_container">
+				<img src="">
+                        </div>
+                        <div class="info_container">
+                        </div>
+                </div>
+	</section>
 </div>
+<script src="https://kit.fontawesome.com/96fd0de210.js" crossorigin="anonymous"></script>
 {% endblock %}

@@ -42,6 +42,7 @@ $(document).ready(function () {
   });
 
   $('input[name="city"]').on('change', function () {
+    $('.city h4').text($(this).attr("class"))
     const choises = document.querySelector('.neighborhood_popover');
     const to_dlt = [];
     for (child of choises.children) {
@@ -60,11 +61,14 @@ $(document).ready(function () {
       .then(data => {
         for (x = 0; x < data.length; x++) {
           const list = $('<li class="radio_input"></li>');
-          const input = $(`<input type="radio" name="neighborhood" value="${data[x].id}">`);
+          const input = $(`<input type="radio" name="neighborhood" value="${data[x].id}" class="${data[x].name}">`);
           const label = $(`<label for="neighborhood">${data[x].name}</label>`);
           list.append(input);
           list.append(label);
           $('.neighborhood_popover').append(list);
+	  $('input[name="neighborhood').on('change', function (){
+	    $('.neighborhood h4').text($(this).attr("class"))
+	  })
         }
       })
       .catch(err => {
