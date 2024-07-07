@@ -94,14 +94,14 @@ def get_clinics_in_neighborhood(neighborhood_id):
     if owner:
         clinics = storage.search_related(Clinic,"username", User, owner)
         for clinic in clinics:
-            load = [clinic.user, clinic.address]
+            load = [clinic.user, clinic.address, clinic.reviews]
             if clinic.neighborhood != the_neighborhood:
                 continue
             else:
                 to_ret.append(clinic.to_dict())
     else:
         for clinic in the_neighborhood.clinics:
-            load = [clinic.user, clinic.address, clinic.neighborhood]
+            load = [clinic.user, clinic.address, clinic.neighborhood, clinic.reviews]
             to_ret.append(clinic.to_dict())
 
     for cl_dict in to_ret:
@@ -115,6 +115,18 @@ def get_clinics_in_neighborhood(neighborhood_id):
             cl_dict["user"] = f'{cl_dict["user"].first_name} {cl_dict["user"].last_name}'
         if "neighborhood" in cl_dict.keys():
             cl_dict["neighborhood"] = cl_dict["neighborhood"].name
+        if "reviews" in cl_dict.keys():
+            num = 0
+            total = 0
+            for review in cl_dict["reviews"]:
+                num += 1
+                total += review.stars
+            if num != 0:
+                avg = total // num
+            else:
+                avg = "N/A"
+            cl_dict["stars"] = avg
+            del (cl_dict["reviews"])
     
     res = make_response(dumps(to_ret, indent=4), 200)
     res.headers["Content-type"] = "application/json"

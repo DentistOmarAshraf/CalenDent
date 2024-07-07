@@ -18,6 +18,7 @@ from models import storage
 from models.city import City
 from models.user import User
 from models.service import Service
+from models.clinic import Clinic
 from json import dumps
 from functools import wraps
 from .helper_function import create_token, decode_token
@@ -61,12 +62,14 @@ def home_page():
     if token:
         data = decode_token(token, app.secret_key)
         user = storage.get(User, data["user_id"])
+        clinics = user.address.neighborhood.clinics
     else:
         user = None
+        clinics = storage.all(Clinic).values()
 
     cities = storage.all(City).values()
 
-    return render_template("home.html", title="Home", user=user, cities=cities)
+    return render_template("home.html", title="Home", user=user, cities=cities, clinics=clinics)
 
 @app.route("/signup", strict_slashes=False, methods=["GET"])
 def sign_up():

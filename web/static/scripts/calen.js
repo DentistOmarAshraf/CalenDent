@@ -75,24 +75,4 @@ $(document).ready(function () {
         console.log(err);
       });
   });
-  $('button.search').on('click', function () {
-	  const neighborhood_id = $('div.neighborhood input[name="neighborhood"]:checked').val();
-	  const owner = $('div.owner_search input[name="owner"]').val();
-	  if (!neighborhood_id) {
-		  alert('Choose Neighborhood Please');
-	  }
-	  if (neighborhood_id) {
-		  const query = `?owner=${encodeURIComponent(owner)}`;
-		  fetch(`http://localhost:5001/api/v1/neighborhood/${neighborhood_id}/clinics${query}`)
-		  .then(response => {
-			  return response.json();
-		  })
-		  .then(data => {
-			  console.log(data);
-		  })
-		  .catch(err => {
-			  console.error(err);
-		  });
-	  }
-  });
 });
