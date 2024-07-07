@@ -120,7 +120,7 @@ div.neighborhood:hover li:last-child{
 	outline: None;
 	border: 4px solid black;
 }
-button {
+button.search {
         font-size: 18px;
         color: #FFFFFF;
         background-color: #164b8c;
@@ -200,4 +200,27 @@ div.info_container h4{
 	font-family: "Ubuntu", sans-serif;
 	font-weight: 400;
 	font-style: normal;
+}
+div.rating_container {
+	width: 25%;
+	display: flex;
+	flex-direction: column;
+	justify-content:space-evenly;
+}
+div.rating_container h1 {
+	font-family: "Ubuntu", sans-serif;
+	font-weight: 400;
+	font-style: normal;
+	margin-left: 40%;
+}
+div.rating_container button.reservation {
+	font-size: 13px;
+        color: #FFFFFF;
+        background-color: #b51d25;
+        right: 20px;
+        width: 80%;
+        height: 35px;
+	margin-left: 10%;
+        border: 0px;
+        border-radius: 4px;
 }
