@@ -213,14 +213,21 @@ div.rating_container h1 {
 	font-style: normal;
 	margin-left: 40%;
 }
-div.rating_container button.reservation {
-	font-size: 13px;
+div.rating_container a.reservation {
+	display: flex;
         color: #FFFFFF;
         background-color: #b51d25;
+	align-items: center;
+	justify-content: center;
+	text-decoration: None;
         right: 20px;
         width: 80%;
         height: 35px;
 	margin-left: 10%;
         border: 0px;
-        border-radius: 15px;
+        border-radius: 7px;
+	font-family: "Ubuntu", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+	font-size: 16px;
 }
