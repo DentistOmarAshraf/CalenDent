@@ -4,6 +4,9 @@
 			{{ form.hidden_tag() }}
 			<fieldset>
 				<legend class="sign_in">SIGN IN:</legend>
+				{% if url %}
+				<input type="hidden" id="next" name="next_url" value={{ url }}>
+				{% endif %}
 				{{ form.email.label }}<br>
 				{{ form.email }}<br>
 				{{ form.password.label }}<br>

@@ -16,7 +16,7 @@ from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
 from models import storage
 from models.city import City
-from models.user import User
+from models.user import User, RoleType
 from models.service import Service
 from models.clinic import Clinic
 from json import dumps
@@ -40,7 +40,8 @@ def token_required(func):
     def decorated(*args, **kwargs):
         token = request.cookies.get('jwt_token')
         if not token:
-            return make_response(redirect(url_for('sign_in')))
+            next_url = request.url
+            return make_response(redirect(url_for('sign_in', next=next_url)))
         try:
             data = decode_token(token, app.secret_key)
             user_id = data["user_id"]
@@ -88,7 +89,8 @@ def sign_in():
     if request.cookies.get("jwt_token"):
         abort(404)
     form = LoginForm()
-    return render_template("signin.html", title="SignIn", form=form)
+    next_url = request.args.get('next')
+    return render_template("signin.html", title="SignIn", form=form, url=next_url)
 
 
 @app.route("/signup", strict_slashes=False, methods=["POST"])
@@ -120,6 +122,7 @@ def sign_up_register():
 def signin_action():
     form = LoginForm()
     if form.validate_on_submit():
+        next_url = request.form.get('next_url')
         data = {}
         data["email"] = request.form["email"]
         data["password"] = request.form["password"]
@@ -133,7 +136,7 @@ def signin_action():
         if res.status_code == 200:
             user_data = res.json()
             token = create_token(user_data, app.secret_key, expire_date)
-            response = make_response(redirect(url_for('home_page')), 302)
+            response = make_response(redirect(next_url or url_for('home_page')), 302)
             if expire_date:
                 response.set_cookie('jwt_token', token, httponly=True,
                                 max_age=30*24*60*60)
@@ -191,6 +194,7 @@ def clinic_register_action(user_id):
         data["time_to"] = request.form.get("time_to")
         data["visit_price"] = request.form.get("visit_price")
         data["services"] = services
+        data["duration"] = request.form.get("duration")
 
         head = {"x-api-key": API_KEY}
 
@@ -204,5 +208,68 @@ def clinic_register_action(user_id):
         return make_response(redirect(url_for('clinic_register')))
 
 
+@app.route("/book", strict_slashes=False, methods=["GET"])
+@token_required
+def make_reservation(user_id):
+    the_user = storage.get(User, user_id)
+    print(the_user.role)
+    print(the_user.role == RoleType.USER)
+    if the_user.role != RoleType.USER:
+        res = make_response(dumps({"err": "Unauthorized"}), 401)
+        res.headers["Content-type"] = "application/json"
+        return res
+    clinic_id = request.args.get('clinic_id')
+    if not clinic_id:
+        return make_response(redirect(url_for('home_page')))
+    the_clinic = storage.get(Clinic, clinic_id)
+    return render_template("reservation.html",
+                            title=f"Reservation {the_clinic.name}",
+                            clinic=the_clinic,
+                            user=the_user)
+
+@app.route("/book", strict_slashes=False, methods=["POST"])
+@token_required
+def make_reservation_action(user_id):
+    clinic_id = request.form.get("clinic_id")
+    phone = request.form.get("phone")
+    appointment = request.form.get("appointment")
+
+    if not clinic_id:
+        return make_response(redirect_for(url_for('make_reservation')))
+    if not phone:
+        return make_response(redirect_for(url_for('make_reservation')))
+    if not appointment:
+        return make_response(redirect_for(url_for('make_reservation')))
+
+    the_user = storage.get(User, user_id)
+    if the_user.role != RoleType.USER:
+        res = make_response(dumps({"err": "Unauthorized"}), 401)
+        res.headers["Content-type"] = "application/json"
+        return res
+
+    the_clinic = storage.get(Clinic, clinic_id)
+    for reservation in the_clinic.reservations:
+        if reservation.user == the_user:
+            res = make_response(dumps({"err": "you have already one"}), 401)
+            res.headers["Content-type"] = "application/json"
+            return res
+
+    data = {}
+    data["user_id"] = user_id
+    data["phone"] = phone
+    data["appointment"] = appointment
+
+    head = {"x-api-key": API_KEY}
+
+    res = requests.post(f"{API_URL}/api/v1/clinic/{clinic_id}/reservation", json=data, headers=head)
+    if res.status_code == 201:
+        print("created")
+        return make_response(redirect(url_for('home_page')))
+    else:
+        return res.json()
+
+
+
+
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000)

@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block content %}
+	<h1>{{ clinic.name }} Reservation </h1>
+	<h3>Dr {{ clinic.user.first_name }} {{ clinic.user.last_name }}</h3>
+	<h3>{{ clinic.address.text_address }}</h3>
+	<h4>Doctor will Contact with you to confirm Appointment</h4>
+	<h4>Services avaliable:</h4>
+	<p>
+	{% for service in clinic.services %}
+	{% if service != clinic.services[-1] %}
+	{{ service.name }},
+	{% else %}
+	{{ service.name }}
+	{% endif %}
+	{% endfor %}
+	</p><br>
+	<form action="/book" method="POST">
+		<fieldset>
+			<legend>Choose Appointment</legend>
+			<input type="hidden" id="clinic_id" name="clinic_id" value="{{ clinic.id }}">
+			<label for="phone">Phone Number</label><br>
+			<input type="tel" id="phone" pattern="^(02\d{8}|0\d{10})$" name="phone" placeholder="Phone or mobile number" required><br>
+			<label for="appointment">Avaliable Appointments</label><br>
+			<select name="appointment" id="appointment" required>
+				<option value="" disabled selected></option>
+				{% for x in clinic.visits_avaliable %}
+				<option value="{{ x.strftime("%H:%M") }}">{{ x.strftime("%H:%M") }}</option>
+				{% endfor %}
+			</select><br>
+			<input type="submit" value="Book">
+		</fieldset>
+	</form>
+{% endblock %}

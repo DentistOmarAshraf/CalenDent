@@ -141,12 +141,14 @@ section.doctor {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
+	justify-content: center;
 	margin-top:30px;
 	width: 100%;
 }
 .doctor_container {
 	display: flex;
 	width: 45%;
+	min-width: 450px;
 	height: 185px;
 	border: 1px #DDDDDD;
 	margin-top: 30px;
@@ -200,6 +202,12 @@ div.info_container h4{
 	font-family: "Ubuntu", sans-serif;
 	font-weight: 400;
 	font-style: normal;
+	height: max-content;
+	width: -webkit-fill-available;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	padding-left: 3%;
 }
 div.rating_container {
 	width: 25%;

@@ -69,7 +69,8 @@ $(document).ready(function () {
 				  const the_aval = $(`<h4><b>from ${data[x].opening_time} to ${data[x].closing_time}</b></h4>`);
 				  const the_dollar = $(`<h4><b>${data[x].visit_price}</b></h4>`);
 				  const the_rate = $(`<h1>${data[x].stars}</h1>`);
-				  const the_button = $('<a class="reservation" href="http://localhost:5000/signin">Book</a>');
+				  const url = `http://localhost:5000/book?clinic_id=${data[x].id}`
+				  const the_button = $(`<a class="reservation" href="${url}">Book</a>`);
 
 				  doc_cont.append(ph_cont);
 				  doc_cont.append(inf_cont);

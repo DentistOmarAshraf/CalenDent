@@ -8,6 +8,7 @@ from models import storage
 from models.user import User, RoleType
 from models.clinic import Clinic
 from models.address import Address
+from models.reservation import Reservation
 from models.neighborhood import Neighborhood
 from models.service import Service
 from flask import make_response, abort, request
@@ -39,7 +40,9 @@ def add_clinic():
                 opening_time = time(int(data["time_from"].split(':')[0]),
                                     int(data["time_from"].split(':')[1])),
                 closing_time = time(int(data["time_to"].split(':')[0]),
-                                    int(data["time_to"].split(':')[1]))
+                                    int(data["time_to"].split(':')[1])),
+                visit_duration = time(int(data["duration"].split(':')[0]),
+                                      int(data["duration"].split(':')[1]))
                 )
 
         new_address = Address(text_address=data["address"])
@@ -109,6 +112,8 @@ def get_clinics_in_neighborhood(neighborhood_id):
             cl_dict["opening_time"] = cl_dict["opening_time"].strftime('%H:%M')
         if "closing_time" in cl_dict.keys():
             cl_dict["closing_time"] = cl_dict["closing_time"].strftime('%H:%M')
+        if "visit_duration" in cl_dict.keys():
+            del (cl_dict["visit_duration"])
         if "address" in cl_dict.keys():
             cl_dict["address"] = cl_dict["address"].text_address
         if "user" in cl_dict.keys():
@@ -129,5 +134,70 @@ def get_clinics_in_neighborhood(neighborhood_id):
             del (cl_dict["reviews"])
     
     res = make_response(dumps(to_ret, indent=4), 200)
+    res.headers["Content-type"] = "application/json"
+    return res
+
+@app_views.route("/clinic/<clinic_id>/reservation", strict_slashes=False, methods=["POST"])
+@check_api_key
+def make_new_reservation(clinic_id):
+    try:
+        data = request.get_json()
+    except Exception:
+        return make_response("Not A JSON", 401)
+
+    the_clinic = storage.get(Clinic, clinic_id)
+    if not the_clinic:
+        res = make_response(dumps({"err": "Clinic Not Found"}), 404)
+        res.headers["Content-type"] = "application/json"
+        return res
+
+    the_user = storage.get(User, data["user_id"])
+    if not the_user:
+        res = make_response(dumps({"err": "User not in data"}), 401)
+        res.headers["Content-type"] = "application/json"
+        return res
+
+    if the_user.role == RoleType.DOCTOR:
+        res = make_response(dumps({"err": "Unauthorized"}), 401)
+        res.headers["Content-type"] = "application/json"
+        return res
+
+    for reservation in the_clinic.reservations:
+        if reservation.user == the_user:
+            res = make_response(dumps({"err": "You can't make reservation twice"}), 401)
+            res.headers["Content-type"] = "application/json"
+            return res
+
+    try:
+        new_reservation = Reservation(
+                            phone=data["phone"],
+                            confirmed=False,
+                            appointment=time(int(data["appointment"].split(':')[0]),
+                                             int(data["appointment"].split(':')[1]))
+                            )
+        the_clinic.reservations.append(new_reservation)
+        the_user.reservations.append(new_reservation)
+        storage.new(new_reservation)
+        storage.new(the_clinic)
+        storage.new(the_user)
+        storage.save()
+
+    except IntegrityError as e:
+        print(e)
+        dt = {"error": "Data error"}
+        res = make_response(dumps(dt, indent=4), 401)
+        res.headers["Content-type"] = "application/json"
+        return res
+
+
+    res_dict = new_reservation.to_dict()
+    if "appointment" in res_dict.keys():
+        res_dict["appointment"] = res_dict["appointment"].strftime("%H:%M")
+    if "user" in res_dict.keys():
+        res_dict["user"] = f'{res_dict["user"].first_name} {res_dict["user"].last_name}'
+    if "clinic" in res_dict.keys():
+        res_dict["clinic"] = res_dict["clinic"].name
+
+    res = make_response(dumps(res_dict), 201)
     res.headers["Content-type"] = "application/json"
     return res

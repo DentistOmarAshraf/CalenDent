@@ -26,6 +26,14 @@
 				{{ form.time_from }}<br>
 				{{ form.time_to.label }}<br>
 				{{ form.time_to }}<br>
+				<label for="duration">Visit Duration</label><br>
+				  <select name="duration" id="duration" required>
+					  <option value="" disabled selected></option>
+					  <option value="00:15">15 min</option>
+					  <option value="00:30">30 Min</option>
+					  <option value="01:00">1 Hour</option>
+					  <option value="02:00">2 Hour</option>
+				  </select><br>
 				<label for="service">Services</label><br>
 				{% for service in services %}
 				<input type="checkbox" id={{ service }} name="service.{{ service.id }}" value={{ service.id }}>

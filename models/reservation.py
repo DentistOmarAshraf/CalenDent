@@ -15,6 +15,7 @@ class Reservation(BaseModel, Base):
     __tablename__ = "reservation"
 
     if getenv("CALEN_STORAGE_TYPE") == "db":
+        phone = Column(String(60), nullable=False)
         appointment = Column(Time, nullable=False)
         confirmed = Column(Boolean, default=False)
         clinic_id = Column(String(60), ForeignKey("clinic.id"))
