@@ -212,8 +212,6 @@ def clinic_register_action(user_id):
 @token_required
 def make_reservation(user_id):
     the_user = storage.get(User, user_id)
-    print(the_user.role)
-    print(the_user.role == RoleType.USER)
     if the_user.role != RoleType.USER:
         res = make_response(dumps({"err": "Unauthorized"}), 401)
         res.headers["Content-type"] = "application/json"
@@ -222,6 +220,11 @@ def make_reservation(user_id):
     if not clinic_id:
         return make_response(redirect(url_for('home_page')))
     the_clinic = storage.get(Clinic, clinic_id)
+    for reservation in the_clinic.reservations:
+        if reservation.user == the_user:
+            res = make_response(dumps({"err": "you have already one"}), 401)
+            res.headers["Content-type"] = "application/json"
+            return res
     return render_template("reservation.html",
                             title=f"Reservation {the_clinic.name}",
                             clinic=the_clinic,
@@ -267,6 +270,23 @@ def make_reservation_action(user_id):
         return make_response(redirect(url_for('home_page')))
     else:
         return res.json()
+
+
+@app.route("/clinic_control", strict_slashes=False, methods=["GET"])
+@token_required
+def clinic_control(user_id):
+    """Control over clinics and reservations"""
+    the_user = storage.get(User, user_id)
+    if the_user.role != RoleType.DOCTOR:
+        res = make_response(dumps({"err": "Unauthorized"}), 401)
+        res.headers["Content-type"] = "application/json"
+        return res
+
+    return render_template("clinic_control.html",
+                           clinics=the_user.clinics,
+                           user=the_user,
+                           title=f"Controller {the_user.first_name}")
+
 
 
 

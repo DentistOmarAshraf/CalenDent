@@ -8,7 +8,7 @@ from models import storage
 from models.user import User, RoleType
 from models.clinic import Clinic
 from models.address import Address
-from models.reservation import Reservation
+from models.reservation import Reservation, Status
 from models.neighborhood import Neighborhood
 from models.service import Service
 from flask import make_response, abort, request
@@ -171,7 +171,7 @@ def make_new_reservation(clinic_id):
     try:
         new_reservation = Reservation(
                             phone=data["phone"],
-                            confirmed=False,
+                            status=Status.WAITING,
                             appointment=time(int(data["appointment"].split(':')[0]),
                                              int(data["appointment"].split(':')[1]))
                             )
@@ -197,6 +197,8 @@ def make_new_reservation(clinic_id):
         res_dict["user"] = f'{res_dict["user"].first_name} {res_dict["user"].last_name}'
     if "clinic" in res_dict.keys():
         res_dict["clinic"] = res_dict["clinic"].name
+    if "status" in res_dict.keys():
+        res_dict["status"] = res_dict["status"].value
 
     res = make_response(dumps(res_dict), 201)
     res.headers["Content-type"] = "application/json"

@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+{% block content %}
+<section class="controller_container">
+	<div class="doctor_name_container">
+		<h1>Welcome Dr {{ user.first_name }}</h1>
+	</div>
+	<div class="clinic_container">
+	{% for clinic in clinics %}
+	<div class="doctor_name_container">
+		<h1>{{ clinic.name }}</h1>
+	</div> 
+		{% if clinic.reservations %}
+		<div class="reservation_container">
+			{% for reservation in clinic.reservations %}
+			<div class="reservation_clinic_control" id={{ reservation.id }}>
+				<div class="photo_container">
+					<img src="'../../static/images/user.png">
+				</div>
+				<div class="info_container">
+					<div class="clinic_owner">
+						<i class="fa-solid fa-user"></i>
+						<h4><b>{{ reservation.user.first_name }} {{ reservation.user.last_name }}</b></h4>
+					</div>
+					<div class="clinic_owner">
+						<i class="fa-solid fa-phone"></i>
+						<h4><b>{{ reservation.phone }}</b></h4>
+					</div>
+					<div class="clinic_aval">
+						<i class="fa-solid fa-clock"></i>
+						<h4><b>{{ reservation.appointment.strftime("%H:%M") }}</b></h4>
+					</div>
+					<div class="clinic_visit">
+						{% if reservation.status.value == "confirmed" %}
+						<i class="fa-solid fa-square-check"></i>
+						{% else %}
+						<i class="fa-regular fa-square-check"></i>
+						{% endif %}
+						<h4><b>{{ reservation.status.value }}</b></h4>
+					</div>
+				</div>
+				<div class="rating_container">
+					{% if reservation.status.value == "waiting" %}
+					<a class="confirmation_confirm">
+						Confirm
+					</a>
+					<a class="confirmation_decline">
+						Decline
+					</a>
+					{% elif reservation.status.value == "confirmed" %}
+					<a class="confirmation_decline">
+						Decline
+					</a>
+					{% else %}
+					<a class="confirmation_confirm">
+						Re-Confirm
+					</a>
+					<a class="confirmation_delete">
+						Delete
+					</a>
+					{% endif %}
+				</div>
+			</div>
+		{% endfor %}
+		</div>
+		{% else %}
+		<div class="no_reservation_now">
+			<p>No reservations Now</p>
+		</div>
+		{% endif %}
+	{% endfor %}
+	</div>
+</section>
+<script src="https://kit.fontawesome.com/96fd0de210.js" crossorigin="anonymous"></script> 
+{% endblock %}

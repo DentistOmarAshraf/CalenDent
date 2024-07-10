@@ -1,0 +1,103 @@
+section.controller_container {
+	max-width: 1000px;
+	top: 30px;
+	margin: auto;
+	position: relative;
+	background-color: white
+}
+section.controller_container div.doctor_name_container {
+	display: flex;
+	justify-content: center;
+}
+section.controller_container div.doctor_name_container h1 {
+        font-family: "Ubuntu", sans-serif;
+	display: flex;
+	justify-content: center;
+        font-weight: 900;
+        font-style: normal;
+	width: 60%;
+	border-bottom: 1px solid black;
+	margin: 30px;
+}
+section.controller_container div.no_reservation_now{
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+div.clinic_container {
+	width: 100%
+}
+div.reservation_container {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+div.reservation_clinic_control {
+	display: flex;
+	border-radius: 10px;
+	min-width: 449px;
+	height: 185px;
+	margin-top: 30px;
+	margin-left: 24.5px;
+	margin-right: 24.5px;
+	background: #d8e7f0;
+}
+div.rating_container a.confirmation_confirm {
+	display: flex;
+        color: white;
+        background-color: #0fa664;
+        align-items: center;
+        justify-content: center;
+        text-decoration: None;
+        right: 20px;
+        width: 80%;
+        height: 35px;
+        margin-left: 10%;
+        border: 0px;
+        border-radius: 7px;
+        font-family: "Ubuntu", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 16px;
+	cursor: pointer;
+}
+div.rating_container a.confirmation_decline {
+	cursor: pointer;
+	background-color: #b51d25;
+        display: flex;
+        color: white;
+        align-items: center;
+        justify-content: center;
+        text-decoration: None;
+        right: 20px;
+        width: 80%;
+        height: 35px;
+        margin-left: 10%;
+        border: 0px;
+        border-radius: 7px;
+        font-family: "Ubuntu", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 16px;
+}
+div.rating_container a.confirmation_delete {
+        cursor: pointer;
+        background-color: #485161;
+        display: flex;
+        color: white;
+        align-items: center;
+        justify-content: center;
+        text-decoration: None;
+        right: 20px;
+        width: 80%;
+        height: 35px;
+        margin-left: 10%;
+        border: 0px;
+        border-radius: 7px;
+        font-family: "Ubuntu", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 16px;
+}

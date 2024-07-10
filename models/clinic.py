@@ -51,6 +51,7 @@ class Clinic(BaseModel, Base):
                                                   seconds=time_delta.second)
         for reservation in self.reservations:
             if reservation.appointment in visits:
-                visits.remove(reservation.appointment)
+                if reservation.status.value != "declined":
+                    visits.remove(reservation.appointment)
 
         return visits

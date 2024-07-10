@@ -22,3 +22,4 @@ from .user import *
 from .city import *
 from .neighborhood import *
 from .clinic import *
+from .reservation import *

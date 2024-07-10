@@ -1,19 +1,30 @@
 {% extends "layout.html" %}
 {% block content %}
-		<form action="/signin" method="POST">
+<section class="signin_container">
+		<form class="signin_form" action="/signin" method="POST">
 			{{ form.hidden_tag() }}
 			<fieldset>
-				<legend class="sign_in">SIGN IN:</legend>
+				<legend class="sign_in"></legend>
 				{% if url %}
 				<input type="hidden" id="next" name="next_url" value={{ url }}>
 				{% endif %}
+				<div class="label_input_container">
 				{{ form.email.label }}<br>
 				{{ form.email }}<br>
+				</div>
+				<div class="label_input_container">
 				{{ form.password.label }}<br>
 				{{ form.password }}<br>
+				</div>
+				<div class="remember_container">
 				{{ form.remember }}
 				{{ form.remember.label }}<br>
+				</div>
+				<div class="submit_container">
 				{{ form.submit }}
+				</div>
+				<p>Don't Have Account ? <a href="http://localhost:5000/signup">Sign Up</p>
 			</fieldset>
 		</form>
+</section>
 {% endblock %}
