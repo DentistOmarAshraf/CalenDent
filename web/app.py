@@ -69,7 +69,7 @@ def home_page():
         clinics = storage.all(Clinic).values()
 
     cities = storage.all(City).values()
-
+    
     return render_template("home.html", title="Home", user=user, cities=cities, clinics=clinics)
 
 @app.route("/signup", strict_slashes=False, methods=["GET"])
@@ -162,6 +162,7 @@ def logout(user_id):
 @app.route("/clinic_reg", strict_slashes=False, methods=["GET"])
 @token_required
 def clinic_register(user_id):
+    the_user = storage.get(User, user_id)
     services = []
     for key, value in storage.all(Service).items():
         services.append(value)
@@ -172,7 +173,7 @@ def clinic_register(user_id):
 
     form = ClinicForm()
     return render_template("clinic_reg.html", title="Clinic Registration", form=form,
-                            services=services, cities=cities)
+                            services=services, cities=cities, user=the_user)
 
 
 @app.route("/clinic_reg", strict_slashes=False, methods=["POST"])
@@ -288,6 +289,20 @@ def clinic_control(user_id):
                            title=f"Controller {the_user.first_name}")
 
 
+@app.route("/user_reservations", strict_slashes=False, methods=["GET"])
+@token_required
+def user_reservation_control(user_id):
+    """User Reservation page to Know status of the visit or Cancel it"""
+    the_user = storage.get(User, user_id)
+    if the_user.role != RoleType.USER:
+        res = make_response(dumps({"err": "Unauthorized"}), 401)
+        res.headers["Content-type"] = "application/json"
+        return res
+
+    return render_template("user_control.html",
+                           reservations=the_user.reservations,
+                           user=the_user,
+                           title=f"Your Reservations")
 
 
 

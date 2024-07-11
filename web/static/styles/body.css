@@ -6,6 +6,33 @@ body {
 	font-size: 14px;
 	font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
+.navbar__menu {
+	margin-left: auto;
+	padding-right: 140px;
+}
+.navbar__menu ul {
+	padding-left:0em;
+	margin: 0;
+	text-align: left;
+}
+.navbar__menu li {
+	display: inline-block;
+	padding: 0.0em;
+}
+.navbar__menu .menu__link {
+	display: block;
+	padding: 1em;
+	text-decoration: none;
+	color: white;
+        font-family: "Ubuntu", sans-serif;
+        font-weight: 900;
+        font-style: normal;
+}
+.navbar__menu .menu__link:hover {
+	background: #ebf9fc;
+	color: black;
+	transition: ease 0.3s all;
+}
 div.container_logo{
 	padding-top: 30px;
 	display:flex;

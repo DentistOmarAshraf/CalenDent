@@ -6,6 +6,7 @@
 		<link rel="stylesheet" href="../static/styles/signin.css">
 		<link rel="stylesheet" href="../static/styles/header.css">
 		<link rel="stylesheet" href="../static/styles/clinic_control.css">
+		<link rel="stylesheet" href="../static/styles/book.css">
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 		<script type="text/javascript" src="../static/scripts/calen.js"></script>
 		<script type="text/javascript" src="../static/scripts/calen_2.js"></script>
@@ -19,8 +20,24 @@
 			{% if not user %}
 			<button class="sign_in"><a href="http://localhost:5000/signin">Sign In</a></button>
 			{% else %}
-			<button class="sign_in"><a href="http://localhost:5000/signin">{{ user.first_name }}</a></button>
+			<button class="sign_in"><a href="http://localhost:5000/logout">Sign Out</a></button>
 			{% endif %}
+			<nav class="navbar__menu">
+				<ul class="navbar__list">
+						<li><a class="menu__link" href="http://localhost:5000/">Home</a></li>
+					{% if user %}
+						{% if user.role.value == "user" %}
+						<li><a class="menu__link" href="http://localhost:5000/user_reservations">Your Reservations</a></li>
+						<li><a class="menu__link" href="http://localhost:5000/clinic_reg">Add your Clinic</a></li>
+						{% elif user.role.value == "doctor" %}
+						<li><a class="menu__link"  href="http://localhost:5000/clinic_control">Your Clinics</a></li>
+						{% endif %}
+					{% else %}
+						<li><a class="menu__link" href="http://localhost:5000/clinic_reg">Add your Clinic</a></li>
+						<li><a class="menu__link" href="http://localhost:5000/signup">Sign Up</a></li>
+					{% endif %}
+				</ul>
+			</nav>
 		</header>
 		{% block content %}{% endblock %}
 	</body>

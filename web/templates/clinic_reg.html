@@ -1,31 +1,48 @@
 {% extends "layout.html" %}
 {% block content %}
+<section class="reservation_booking_page">
+	<div class="reservation_booking_page_container">
 		<form action="/clinic_reg" method="POST">
 			{{ form.hidden_tag() }}
 			<fieldset>
 				<legend>Clinic Registration:</legend>
-				{{ form.name.label }}<br>
-				{{ form.name }}<br>
-				{{ form.address.label }}<br>
-				{{ form.address }}<br>
-				{{ form.visit_price.label }}<br>
-				{{ form.visit_price }}<br>
-				<label for="city">City</label><br>
+				<div class="input_info_section">
+				{{ form.name.label }}
+				{{ form.name }}
+				</div>
+				<div class="input_info_section">
+				{{ form.address.label }}
+				{{ form.address }}
+				</div>
+				<div class="input_info_section">
+				{{ form.visit_price.label }}
+				{{ form.visit_price }}
+				</div>
+				<div class="input_info_section">
+				<label for="city">City</label>
 				 <select name="city" id="city" required>
 				   <option value="" disabled selected>--Choose City--</option>
 				   {% for city in cities %}
 				   <option id={{ city.id }} value={{ city.id }}>{{ city.name }}</option>
 				   {% endfor %}
-				 </select><br>
-				 <label for="neighborhood">Neighborhood</label><br>
+				 </select>
+				</div>
+				<div class="input_info_section">
+				 <label for="neighborhood">Neighborhood</label>
 				  <select name="neighborhood" id="neighborhood" required>
 				    <option value="" disabled selected>--Choose Neighborhood--</option>
 
-				  </select><br>
-				{{ form.time_from.label }}<br>
-				{{ form.time_from }}<br>
-				{{ form.time_to.label }}<br>
-				{{ form.time_to }}<br>
+				  </select>
+				</div>
+				<div class="input_info_section">
+				{{ form.time_from.label }}
+				{{ form.time_from }}
+				</div>
+				<div class="input_info_section">
+				{{ form.time_to.label }}
+				{{ form.time_to }}
+				</div>
+				<div class="input_info_section">
 				<label for="duration">Visit Duration</label><br>
 				  <select name="duration" id="duration" required>
 					  <option value="" disabled selected></option>
@@ -33,13 +50,20 @@
 					  <option value="00:30">30 Min</option>
 					  <option value="01:00">1 Hour</option>
 					  <option value="02:00">2 Hour</option>
-				  </select><br>
-				<label for="service">Services</label><br>
+				  </select>
+				</div>
+				<div class="input_info_section">
+				<label for="service">Services</label>
+				</div>
 				{% for service in services %}
 				<input type="checkbox" id={{ service }} name="service.{{ service.id }}" value={{ service.id }}>
 				<label for={{ service.id }}> {{ service.name }}</label><br>
 				{% endfor %}
+				<div class="input_info_section">
 				{{ form.submit }}
+				</div>
 			</fieldset>
 		</form>
+	</div>
+</section>
 {% endblock %}

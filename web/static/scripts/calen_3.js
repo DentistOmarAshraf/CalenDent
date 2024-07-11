@@ -9,7 +9,6 @@ $(document).ready(function(){
 				return data.json()
 			})
 			.then(data => {
-				console.log(data)
 				window.location.reload()
 			})
 			.catch(err => {
@@ -27,7 +26,6 @@ $(document).ready(function(){
                                 return data.json()
                         })
                         .then(data => {
-                                console.log(data)
 				window.location.reload()
                         })
                         .catch(err => {
@@ -46,7 +44,6 @@ $(document).ready(function(){
                                 return data.json()
                         })
                         .then(data => {
-                                console.log(data)
                                 window.location.reload()
                         })
                         .catch(err => {
