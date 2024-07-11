@@ -3,7 +3,8 @@
 User SignUp, SignIn
 """
 
-from flask import Flask, render_template, request, url_for, redirect, make_response, jsonify
+from flask import Flask, render_template, request
+from flask import url_for, redirect, make_response, jsonify
 from flask import abort
 from flask_cors import CORS
 import requests
@@ -47,7 +48,7 @@ def token_required(func):
             user_id = data["user_id"]
         except jwt.ExpiredSignatureError:
             res = make_response(redirect(url_for('sign_in')))
-            res.set_cookie('jwt_token','', httponly=True, expires=0)
+            res.set_cookie('jwt_token', '', httponly=True, expires=0)
             return res
         except jwt.InvalidTokenError:
             return make_response(redirect(url_for('sign_in')))
@@ -69,8 +70,13 @@ def home_page():
         clinics = storage.all(Clinic).values()
 
     cities = storage.all(City).values()
-    
-    return render_template("home.html", title="Home", user=user, cities=cities, clinics=clinics)
+
+    return render_template("home.html",
+                           title="Home",
+                           user=user,
+                           cities=cities,
+                           clinics=clinics)
+
 
 @app.route("/signup", strict_slashes=False, methods=["GET"])
 def sign_up():
@@ -81,7 +87,10 @@ def sign_up():
     for key, value in storage.all(City).items():
         cities.append(value)
 
-    return render_template("signup.html", title="SignUp", form=form, cities=cities)
+    return render_template("signup.html",
+                           title="SignUp",
+                           form=form,
+                           cities=cities)
 
 
 @app.route("/signin", strict_slashes=False, methods=["GET"])
@@ -90,7 +99,10 @@ def sign_in():
         abort(404)
     form = LoginForm()
     next_url = request.args.get('next')
-    return render_template("signin.html", title="SignIn", form=form, url=next_url)
+    return render_template("signin.html",
+                           title="SignIn",
+                           form=form,
+                           url=next_url)
 
 
 @app.route("/signup", strict_slashes=False, methods=["POST"])
@@ -108,7 +120,7 @@ def sign_up_register():
         head = {"x-api-key": API_KEY}
 
         res = requests.post(f"{API_URL}/api/v1/user", json=data, headers=head)
-        
+
         if res.status_code == 201:
             return redirect(url_for('home_page'))
 
@@ -126,20 +138,22 @@ def signin_action():
         data = {}
         data["email"] = request.form["email"]
         data["password"] = request.form["password"]
-        
+
         if "remember" in request.form.keys():
             expire_date = timedelta(days=30)
         else:
             expire_date = None
-        
+
         res = requests.post(f"{API_URL}/api/v1/check_user", json=data)
         if res.status_code == 200:
             user_data = res.json()
             token = create_token(user_data, app.secret_key, expire_date)
-            response = make_response(redirect(next_url or url_for('home_page')), 302)
+            response = make_response(
+                                redirect(next_url or url_for('home_page')),
+                                302)
             if expire_date:
                 response.set_cookie('jwt_token', token, httponly=True,
-                                max_age=30*24*60*60)
+                                    max_age=30*24*60*60)
             else:
                 response.set_cookie('jwt_token', token, httponly=True)
 
@@ -155,7 +169,7 @@ def signin_action():
 @token_required
 def logout(user_id):
     response = make_response(redirect(url_for('home_page')))
-    response.set_cookie('jwt_token','', httponly=True, expires=0)
+    response.set_cookie('jwt_token', '', httponly=True, expires=0)
     return response
 
 
@@ -172,8 +186,12 @@ def clinic_register(user_id):
         cities.append(value)
 
     form = ClinicForm()
-    return render_template("clinic_reg.html", title="Clinic Registration", form=form,
-                            services=services, cities=cities, user=the_user)
+    return render_template("clinic_reg.html",
+                           title="Clinic Registration",
+                           form=form,
+                           services=services,
+                           cities=cities,
+                           user=the_user)
 
 
 @app.route("/clinic_reg", strict_slashes=False, methods=["POST"])
@@ -199,7 +217,8 @@ def clinic_register_action(user_id):
 
         head = {"x-api-key": API_KEY}
 
-        res = requests.post(f"{API_URL}/api/v1/user/clinic", json=data, headers=head)
+        res = requests.post(f"{API_URL}/api/v1/user/clinic",
+                            json=data, headers=head)
         if res.status_code == 201:
             print("CREATED")
             return make_response(redirect(url_for('home_page')))
@@ -227,9 +246,10 @@ def make_reservation(user_id):
             res.headers["Content-type"] = "application/json"
             return res
     return render_template("reservation.html",
-                            title=f"Reservation {the_clinic.name}",
-                            clinic=the_clinic,
-                            user=the_user)
+                           title=f"Reservation {the_clinic.name}",
+                           clinic=the_clinic,
+                           user=the_user)
+
 
 @app.route("/book", strict_slashes=False, methods=["POST"])
 @token_required
@@ -265,7 +285,9 @@ def make_reservation_action(user_id):
 
     head = {"x-api-key": API_KEY}
 
-    res = requests.post(f"{API_URL}/api/v1/clinic/{clinic_id}/reservation", json=data, headers=head)
+    res = requests.post(f"{API_URL}/api/v1/clinic/{clinic_id}/reservation",
+                        json=data,
+                        headers=head)
     if res.status_code == 201:
         print("created")
         return make_response(redirect(url_for('home_page')))
@@ -303,7 +325,6 @@ def user_reservation_control(user_id):
                            reservations=the_user.reservations,
                            user=the_user,
                            title=f"Your Reservations")
-
 
 
 if __name__ == "__main__":
