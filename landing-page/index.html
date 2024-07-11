@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Manipulating the DOM</title>
+  <!-- Load Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Fira+Sans:900|Merriweather&display=swap" rel="stylesheet">
+  <!-- Load Styles -->
+  <link href="css/styles.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <!-- HTML Follows BEM naming conventions 
+  IDs are only used for sections to connect menu achors to sections -->
+  <header class="page__header">
+    <nav class="navbar__menu">
+      <!-- Navigation starts as empty UL that will be populated with JS -->
+      <ul id="navbar__list" class="navbar__list">
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <header class="main__hero">
+      <h1>CalenDent</h1>
+    </header>
+    <!-- Each Section has an ID (used for the anchor) and 
+    a data attribute that will populate the li node.
+    Adding more sections will automatically populate nav.
+    The first section is set to active class by default -->
+    <section id="section1" data-nav="Story" class="your-active-class">
+      <div class="landing__container">
+        <h2>What is CalenDent ?</h2>
+        <div class="paragraph_photo_container">
+          <p>CalenDent is a comprehensive web application designed to streamline the reservation process for dental
+            clinics. Whether you're a patient looking to book an appointment or a dental clinic aiming to manage your
+            schedule efficiently, CalenDent offers a user-friendly solution that simplifies dental care appointments.
+          </p>
+          <img class="landing_photo" src="image/landing_photo_1.png">
+        </div>
+      </div>
+    </section>
+    <section id="section2" data-nav="3 Steps">
+      <div class="landing__container">
+        <h2>Easy to Use</h2>
+        <div class="paragraph_photo_container">
+          <p><b>Just 3 simple steps: </b><br>
+            1.Choose Your City<br>
+            2.Choose Your Neighborhood <br>
+            3.Ht Search<br>
+            (optional) You Can Search with Doctor name to find his Clinic</p>
+          <img class="landing_photo" src="image/landing_photo_2.png">
+        </div>
+    </section>
+    <section id="section3" data-nav="Book">
+      <div class="landing__container">
+        <h2>Book Your reservation</h2>
+        <div class="paragraph_photo_container">
+          <p>
+            <b>Doctor Card</b><br>
+            from here you can book a visit for Doctor You will found<br>
+            1. Name of Clinic<br>
+            2. Doctor's name<br>
+            3. Avaliable time of the Clinic<br>
+            4. Visit Price<br>
+          </p>
+          <img class="landing_photo" src="image/landing_photo_3.png">
+        </div>
+      </div>
+    </section>
+    <section id="section4" data-nav="Control">
+      <div class="landing__container">
+        <h2>Control Your Reservation</h2>
+        <div class="paragraph_photo_container">
+          <p>
+            You can see all your reservation from "Your Reservations" Tab<br>
+          </p>
+          <img class="landing_photo" src="image/landing_photo_4.png">
+        </div>
+      </div>
+    </section>
+    <section id="section5" data-nav="For Doctor">
+      <div class="landing__container">
+        <h2>For Doctor, Take full control on reservation</h2>
+        <div class="paragraph_photo_container">
+          <p>
+            Simple and Elegant Dashboard For Doctor for Control over Appointment
+          </p>
+          <img class="landing_photo" src="image/landing_photo_5.png">
+        </div>
+      </div>
+    </section>
+    <section id="section6" data-nav="Who Am I?">
+      <div class="landing__container">
+        <h2>Who Am I ?</h2>
+        <div class="paragraph_photo_container">
+          <p>
+            I am a dedicated dentist with a passion for software engineering.<br>
+            Combining my expertise in dentistry with my love for technology, <br>
+            I created CalenDent to serve fellow dentists and improve the dental appointment experience for patients.<br>
+            My goal is to make dental clinic management more efficient and accessible through innovative solutions.
+          </p>
+          <img class="last_img" src="image/landing_photo_6.jpeg">
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <footer class="page__footer">
+    <p>ALX Software Engineer</p>
+  </footer>
+  <script src="js/app.js"></script>
+</body>
+
+</html>
