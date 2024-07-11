@@ -3,8 +3,6 @@
  * 
 */
 let section = document.querySelectorAll('section')
-console.log(section)
-console.log(typeof(section))
 let frg = document.createDocumentFragment()
 let list = document.getElementById('navbar__list')
 /**
@@ -25,6 +23,14 @@ for (i = 1; i <= section.length; i++) {
     anchor.setAttribute('class', 'menu__link')
     frg.appendChild(listItem);
 }
+const lastlist = document.createElement('li')
+const lastAnchor = document.createElement('a')
+lastlist.appendChild(lastAnchor)
+lastAnchor.textContent="CalenDent"
+lastAnchor.setAttribute('href', "http://localhost:5000/")
+lastAnchor.setAttribute('data-nav', "http://localhost:5000/")
+lastAnchor.setAttribute('class', 'menu__link')
+frg.appendChild(lastlist)
 /* Create a Hamburger <nav> button when screen less than 600px */
 const un = document.createElement('a');
 un.setAttribute('href', "javascript:void(0)");
@@ -89,6 +95,11 @@ function intersectionHandelar(entry) {
 list.addEventListener('click', function (scrToSec) {
     /*previnting jumping to Anchor <a> = #section [i] immediatly*/
     scrToSec.preventDefault();
+    const all_list = list.querySelectorAll('li')
+    if (scrToSec.target == all_list[all_list.length - 1].children[0]){
+        window.location.href = scrToSec.target.getAttribute("href")
+        return
+    }
     if (scrToSec.target.dataset.nav) {
         document
             .querySelector(`${scrToSec.target.dataset.nav}`)
@@ -96,7 +107,3 @@ list.addEventListener('click', function (scrToSec) {
     }
 }
 )
-
-
-/*Thank You*/
-// chk ReadMe
