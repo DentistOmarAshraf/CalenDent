@@ -1,5 +1,18 @@
 {% extends "layout.html" %}
 {% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+	{% if messages %}
+		{% for category, message in messages %}
+		<div class="alert-{{ category }}">
+			<h4>
+				<b>
+				{{ message }}
+				</b>
+			</h4>
+		</div>
+		{% endfor %}
+	{% endif %}
+{% endwith %}
 <section class="reservation_booking_page">
 	<div class="reservation_booking_page_container">
 	<form action="/signup" method="POST">

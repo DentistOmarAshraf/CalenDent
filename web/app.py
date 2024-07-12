@@ -5,7 +5,7 @@ User SignUp, SignIn
 
 from flask import Flask, render_template, request
 from flask import url_for, redirect, make_response, jsonify
-from flask import abort
+from flask import abort, flash
 from flask_cors import CORS
 import requests
 from .registration_form import RegistrationForm
@@ -115,17 +115,17 @@ def sign_up_register():
             if key not in x:
                 data[key] = value
 
-        print(data)
-
         head = {"x-api-key": API_KEY}
 
         res = requests.post(f"{API_URL}/api/v1/user", json=data, headers=head)
-
+        
         if res.status_code == 201:
+            flash(f'Successfully Created for {res.json()["username"]}', 'success')
             return redirect(url_for('home_page'))
 
         else:
-            return res.json()
+            flash(res.json()["err"], 'error')
+            return redirect(url_for('sign_up'))
     else:
         return redirect(url_for('sign_up'))
 
@@ -157,11 +157,14 @@ def signin_action():
             else:
                 response.set_cookie('jwt_token', token, httponly=True)
 
+            flash(f'Signed In as {user_data["username"]}', 'success')
             return response
 
         else:
-            return res.json()
+            flash(f'{res.json()["err"]}', 'error')
+            return redirect(url_for('sign_in'))
     else:
+        flash(f'Email or password Field Error', 'error')
         return render_template("signin.html", title="Sign In", form=form)
 
 
@@ -220,11 +223,13 @@ def clinic_register_action(user_id):
         res = requests.post(f"{API_URL}/api/v1/user/clinic",
                             json=data, headers=head)
         if res.status_code == 201:
-            print("CREATED")
+            flash(f'Succesfully Created Clinic {res.json()["name"]}', 'success')
             return make_response(redirect(url_for('home_page')))
         else:
+            flash(f'{res.json()["err"]}', 'error')
             return res.json()
     else:
+        flash(f'Error !', 'error')
         return make_response(redirect(url_for('clinic_register')))
 
 
@@ -242,9 +247,8 @@ def make_reservation(user_id):
     the_clinic = storage.get(Clinic, clinic_id)
     for reservation in the_clinic.reservations:
         if reservation.user == the_user:
-            res = make_response(dumps({"err": "you have already one"}), 401)
-            res.headers["Content-type"] = "application/json"
-            return res
+            flash('You already Booked! Check Your Reservations', 'error')
+            return redirect(url_for('home_page'))
     return render_template("reservation.html",
                            title=f"Reservation {the_clinic.name}",
                            clinic=the_clinic,
@@ -261,15 +265,13 @@ def make_reservation_action(user_id):
     if not clinic_id:
         return make_response(redirect_for(url_for('make_reservation')))
     if not phone:
+        flash('Fill out Phone Number', 'error')
         return make_response(redirect_for(url_for('make_reservation')))
     if not appointment:
+        flash('Fill out Time of Your reservation', 'error')
         return make_response(redirect_for(url_for('make_reservation')))
 
     the_user = storage.get(User, user_id)
-    if the_user.role != RoleType.USER:
-        res = make_response(dumps({"err": "Unauthorized"}), 401)
-        res.headers["Content-type"] = "application/json"
-        return res
 
     the_clinic = storage.get(Clinic, clinic_id)
     for reservation in the_clinic.reservations:
@@ -289,10 +291,11 @@ def make_reservation_action(user_id):
                         json=data,
                         headers=head)
     if res.status_code == 201:
-        print("created")
+        flash(f'Successfully Booked reservation at {res.json()["clinic"]}', 'success')
         return make_response(redirect(url_for('home_page')))
     else:
-        return res.json()
+        flash(f'{res.json()["err"]} Check Out Your Reservations', 'error')
+        return redirect(url_for('home_page'))
 
 
 @app.route("/clinic_control", strict_slashes=False, methods=["GET"])
@@ -317,9 +320,8 @@ def user_reservation_control(user_id):
     """User Reservation page to Know status of the visit or Cancel it"""
     the_user = storage.get(User, user_id)
     if the_user.role != RoleType.USER:
-        res = make_response(dumps({"err": "Unauthorized"}), 401)
-        res.headers["Content-type"] = "application/json"
-        return res
+        flash('Unauthorized Access !', 'error')
+        return redirect(url_for('home_page'))
 
     return render_template("user_control.html",
                            reservations=the_user.reservations,

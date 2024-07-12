@@ -28,9 +28,10 @@
 					{% if user %}
 						{% if user.role.value == "user" %}
 						<li><a class="menu__link" href="http://localhost:5000/user_reservations">Your Reservations</a></li>
-						<li><a class="menu__link" href="http://localhost:5000/clinic_reg">Add your Clinic</a></li>
+						<li><a class="menu__link" href="http://localhost:5000/clinic_reg">Add Your Clinic</a></li>
 						{% elif user.role.value == "doctor" %}
 						<li><a class="menu__link"  href="http://localhost:5000/clinic_control">Your Clinics</a></li>
+						 <li><a class="menu__link" href="http://localhost:5000/clinic_reg">Add New Clinic</a></li>
 						{% endif %}
 					{% else %}
 						<li><a class="menu__link" href="http://localhost:5000/clinic_reg">Add your Clinic</a></li>
@@ -40,6 +41,19 @@
 				</ul>
 			</nav>
 		</header>
+		{% with messages = get_flashed_messages(with_categories=true) %}
+        		{% if messages %}
+                		{% for category, message in messages %}
+                		<div class="alert-{{ category }}">
+                        		<h4>
+                                		<b>
+                                		{{ message }}
+                                		</b>
+                        		</h4>
+                		</div>
+                		{% endfor %}
+        		{% endif %}
+		{% endwith %}
 		{% block content %}{% endblock %}
 	</body>
 </html>

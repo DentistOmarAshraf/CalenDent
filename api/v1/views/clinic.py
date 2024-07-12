@@ -62,7 +62,7 @@ def add_clinic():
         the_user.role = RoleType.DOCTOR
         storage.save()
     except IntegrityError as e:
-        dt = {"error": "Clinic exists"}
+        dt = {"err": "Clinic exists"}
         res = make_response(dumps(dt, indent=4), 401)
         res.headers["Content-type"] = "application/json"
         return res
@@ -80,6 +80,8 @@ def add_clinic():
         del (to_ret["closing_time"])
     if "neighborhood" in to_ret.keys():
         del (to_ret["neighborhood"])
+    if "visit_duration" in to_ret.keys():
+        del (to_ret["visit_duration"])
     res = make_response(dumps(to_ret, indent=4), 201)
     res.headers["Content-type"] = "application/json"
     return res
@@ -175,6 +177,15 @@ def make_new_reservation(clinic_id):
                             appointment=time(int(data["appointment"].split(':')[0]),
                                              int(data["appointment"].split(':')[1]))
                             )
+        for reservation in the_user.reservations:
+            if new_reservation.appointment == reservation.appointment:
+                time_of_error = reservation.appointment.strftime("%H:%M")
+                to_ret = {
+                    "err": f'There Is Reservation At {time_of_error}'
+                    }
+                res = make_response(dumps(to_ret), 401)
+                res.headers["Content-type"] = "application/json"
+                return res
         the_clinic.reservations.append(new_reservation)
         the_user.reservations.append(new_reservation)
         storage.new(new_reservation)

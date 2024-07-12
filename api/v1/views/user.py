@@ -31,13 +31,13 @@ def check_user():
 
     the_user = storage.get_by(User, "email", data["email"])
     if the_user is None:
-        res = make_response(dumps({"error": "user not found"}), 404)
+        res = make_response(dumps({"err": "User not found Sign UP!"}), 404)
         res.headers["Content-type"] = "application/json"
         return res
 
     chk_pass = the_user.verify_password(data["password"])
     if not chk_pass:
-        res = make_response(dumps({"error": "Incorrect password"}), 401)
+        res = make_response(dumps({"err": "Incorrect password"}), 401)
         res.headers["Content-type"] = "application/json"
         return res
     else:
@@ -79,8 +79,7 @@ def new_user():
         storage.new(new_address)
         storage.save()
     except IntegrityError as e:
-        print(e)
-        dt = {"error": "email present"}
+        dt = {"err": "Email Already Exists"}
         res = make_response(dumps(dt, indent=4), 400)
         res.headers["Content-type"] = "application/json"
         return res

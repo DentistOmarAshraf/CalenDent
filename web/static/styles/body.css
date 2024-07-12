@@ -266,3 +266,31 @@ div.rating_container a.reservation {
         font-style: normal;
 	font-size: 16px;
 }
+div.alert-error {
+	display:flex;
+	justify-content: center;
+	align-items: center;
+	height: 40px;
+	width: 100%;
+	background-color: #ae4141;
+}
+div.alert-error h4 {
+	color: white;
+        font-family: "Ubuntu", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+}
+div.alert-success {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 40px;
+	width: 100%;
+	background-color: #41ae74
+}
+div.alert-success h4 {
+        color: white;
+        font-family: "Ubuntu", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+}
