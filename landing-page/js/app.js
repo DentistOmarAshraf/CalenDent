@@ -27,8 +27,8 @@ const lastlist = document.createElement('li')
 const lastAnchor = document.createElement('a')
 lastlist.appendChild(lastAnchor)
 lastAnchor.textContent="CalenDent"
-lastAnchor.setAttribute('href', "http://localhost:5000/")
-lastAnchor.setAttribute('data-nav', "http://localhost:5000/")
+lastAnchor.setAttribute('href', "https://www.dentistomarashraf.tech/")
+lastAnchor.setAttribute('data-nav', "https://www.dentistomarashraf.tech/")
 lastAnchor.setAttribute('class', 'menu__link')
 frg.appendChild(lastlist)
 /* Create a Hamburger <nav> button when screen less than 600px */
