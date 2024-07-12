@@ -238,9 +238,8 @@ def clinic_register_action(user_id):
 def make_reservation(user_id):
     the_user = storage.get(User, user_id)
     if the_user.role != RoleType.USER:
-        res = make_response(dumps({"err": "Unauthorized"}), 401)
-        res.headers["Content-type"] = "application/json"
-        return res
+        flash('Unauthorized !', 'error')
+        return redirect(url_for('home_page'))
     clinic_id = request.args.get('clinic_id')
     if not clinic_id:
         return make_response(redirect(url_for('home_page')))
