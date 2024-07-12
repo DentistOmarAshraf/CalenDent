@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	const api_url = "http://localhost:5001/api/v1/reservation/"
+	const api_url = "https://www.dentistomarashraf.tech/api/v1/reservation/"
 	$('div.rating_container a.confirmation_confirm').on('click', function(){
 		const res_id = $(this).parent().parent().attr('id')
 		const user_confirm = confirm("Are You Sure ?")

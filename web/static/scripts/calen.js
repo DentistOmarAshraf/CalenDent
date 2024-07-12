@@ -6,7 +6,7 @@ function arrange_data (data) {
 }
 
 function get_data (city) {
-  fetch(`http://localhost:5001/api/v1/city/${city}/neighborhood`)
+  fetch(`https://www.dentistomarashraf.tech/api/v1/city/${city}/neighborhood`)
     .then(response => {
       return response.json();
     })
@@ -38,7 +38,7 @@ $(document).ready(function () {
   });
 
   $('header').after().click(function () {
-    window.location.href = 'http://localhost:5000';
+    window.location.href = 'https://www.dentistomarashraf.tech/';
   });
 
   $('input[name="city"]').on('change', function () {
@@ -54,7 +54,7 @@ $(document).ready(function () {
       elem.remove();
     }
     const city_id = $(this).val();
-    fetch(`http://localhost:5001/api/v1/city/${city_id}/neighborhood`)
+    fetch(`http://www.dentistomarashraf.tech/api/v1/city/${city_id}/neighborhood`)
       .then(response => {
         return response.json();
       })
