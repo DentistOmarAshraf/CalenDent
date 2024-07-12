@@ -54,7 +54,7 @@ $(document).ready(function () {
       elem.remove();
     }
     const city_id = $(this).val();
-    fetch(`http://www.dentistomarashraf.tech/api/v1/city/${city_id}/neighborhood`)
+    fetch(`https://www.dentistomarashraf.tech/api/v1/city/${city_id}/neighborhood`)
       .then(response => {
         return response.json();
       })
