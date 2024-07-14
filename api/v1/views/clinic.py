@@ -45,6 +45,9 @@ def add_clinic():
                                       int(data["duration"].split(':')[1]))
                 )
 
+        if not new_clinic.visits_avaliable:
+            raise ValueError("error in Opening and Closing Time")
+
         new_address = Address(text_address=data["address"])
         the_neighborhood.addresses.append(new_address)
 
@@ -54,13 +57,20 @@ def add_clinic():
 
         for service_id in data["services"]:
             new_clinic.services.append(storage.get(Service, service_id))
-        
+
         storage.new(new_clinic)
         storage.new(new_address)
         storage.new(the_user)
         storage.new(the_neighborhood)
         the_user.role = RoleType.DOCTOR
         storage.save()
+
+    except ValueError as e:
+        dt = {"err": str(e)}
+        res = make_response(dumps(dt, indent=4), 401)
+        res.headers["Content-type"] = "application/json"
+        return res
+
     except IntegrityError as e:
         dt = {"err": "Clinic exists"}
         res = make_response(dumps(dt, indent=4), 401)

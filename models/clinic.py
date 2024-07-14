@@ -24,7 +24,8 @@ class Clinic(BaseModel, Base):
         address_id = Column(String(60), ForeignKey("address.id"))
         neighborhood_id = Column(String(60), ForeignKey("neighborhood.id"))
         user = relationship("User", back_populates="clinics")
-        address = relationship("Address", back_populates="clinics")
+        address = relationship("Address", back_populates="clinics",
+                               cascade="all, delete")
         neighborhood = relationship("Neighborhood", back_populates="clinics")
         services = relationship("Service", secondary="clinic_service",
                                 back_populates="clinics")
@@ -43,6 +44,12 @@ class Clinic(BaseModel, Base):
         first_visit = datetime.combine(datetime.today(), self.opening_time)
         last_visit = datetime.combine(datetime.today(), self.closing_time)
         time_delta = datetime.combine(datetime.today(), self.visit_duration)
+
+        chk_duration = timedelta(hours=self.visit_duration.hour,
+                                 minutes=self.visit_duration.minute)
+
+        if last_visit - first_visit < chk_duration:
+            return visits
 
         while first_visit < last_visit:
             visits.append(first_visit.time())

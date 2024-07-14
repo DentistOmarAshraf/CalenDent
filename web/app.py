@@ -58,6 +58,11 @@ def token_required(func):
     return decorated
 
 
+@app.teardown_appcontext
+def close_db(exception):
+    storage.close()
+
+
 @app.route("/", strict_slashes=False, methods=["GET"])
 def home_page():
     token = request.cookies.get('jwt_token')
@@ -227,7 +232,7 @@ def clinic_register_action(user_id):
             return make_response(redirect(url_for('home_page')))
         else:
             flash(f'{res.json()["err"]}', 'error')
-            return res.json()
+            return make_response(redirect(url_for('clinic_register')))
     else:
         flash(f'Error !', 'error')
         return make_response(redirect(url_for('clinic_register')))
