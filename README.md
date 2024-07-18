@@ -33,10 +33,10 @@ Make sure you have the following installed:
 Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/CalenDent.git
-./run_web
-./run_api
+	git clone https://github.com/yourusername/CalenDent.git
+	./run_web
+	./run_api
+```
 
-
-### Usage
-https://www.dentistomarashraf.tech/
+### deployed on:
+[website](https://www.dentistomarashraf.tech/)
