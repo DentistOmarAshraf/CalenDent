@@ -27,7 +27,7 @@ $(document).ready(function () {
     }
     if (neighborhood_id) {
       const query = `?owner=${encodeURIComponent(owner)}`;
-      fetch(`https://www.dentistomarashraf.tech/api/v1/neighborhood/${neighborhood_id}/clinics${query}`)
+      fetch(`http://127.0.0.1:5001/api/v1/neighborhood/${neighborhood_id}/clinics${query}`)
         .then(response => {
           return response.json();
         })
@@ -69,7 +69,7 @@ $(document).ready(function () {
 				  const the_aval = $(`<h4><b>from ${data[x].opening_time} to ${data[x].closing_time}</b></h4>`);
 				  const the_dollar = $(`<h4><b>${data[x].visit_price}</b></h4>`);
 				  const the_rate = $(`<h1>${data[x].stars}</h1>`);
-				  const url = `https://www.dentistomarashraf.tech/book?clinic_id=${data[x].id}`
+				  const url = `http://127.0.0.1:5000/book?clinic_id=${data[x].id}`
 				  const the_button = $(`<a class="reservation" href="${url}">Book</a>`);
 
 				  doc_cont.append(ph_cont);

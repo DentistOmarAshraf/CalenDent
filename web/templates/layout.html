@@ -18,27 +18,27 @@
 	<body>
 		<header>
 			{% if not user %}
-			<button class="sign_in"><a href="https://www.dentistomarashraf.tech/signin">Sign In</a></button>
+			<button class="sign_in"><a href="http://127.0.0.1:5000/signin">Sign In</a></button>
 			{% else %}
-			<button class="sign_in"><a href="https://www.dentistomarashraf.tech/logout">Sign Out</a></button>
+			<button class="sign_in"><a href="http://127.0.0.1:5000/logout">Sign Out</a></button>
 			{% endif %}
 			<nav class="navbar__menu">
 				<ul class="navbar__list">
-						<li><a class="menu__link" href="https://www.dentistomarashraf.tech/">Home</a></li>
+						<li><a class="menu__link" href="http://127.0.0.1:5000/">Home</a></li>
 					{% if user %}
 						{% if user.role.value == "user" %}
-						<li><a class="menu__link" href="https://www.dentistomarashraf.tech/user_reservations">Your Reservations</a></li>
-						<li><a class="menu__link" href="https://www.dentistomarashraf.tech/clinic_reg">Add Your Clinic</a></li>
+						<li><a class="menu__link" href="http://127.0.0.1:5000/user_reservations">Your Reservations</a></li>
+						<li><a class="menu__link" href="http://127.0.0.1:5000/clinic_reg">Add Your Clinic</a></li>
 						{% elif user.role.value == "doctor" %}
-						<li><a class="menu__link"  href="https://www.dentistomarashraf.tech/clinic_control">Your Clinics</a></li>
-						 <li><a class="menu__link" href="https://www.dentistomarashraf.tech/clinic_reg">Add New Clinic</a></li>
+						<li><a class="menu__link"  href="http://127.0.0.1:5000/clinic_control">Your Clinics</a></li>
+						 <li><a class="menu__link" href="http://127.0.0.1:5000/clinic_reg">Add New Clinic</a></li>
 						{% endif %}
 					{% else %}
-						<li><a class="menu__link" href="https://www.dentistomarashraf.tech/clinic_reg">Add your Clinic</a></li>
-						<li><a class="menu__link" href="https://www.dentistomarashraf.tech/user_reservations">Your Reservations</a></li>
-						<li><a class="menu__link" href="https://www.dentistomarashraf.tech/signup">Sign Up</a></li>
+						<li><a class="menu__link" href="http://127.0.0.1:5000/clinic_reg">Add your Clinic</a></li>
+						<li><a class="menu__link" href="http://127.0.0.1:5000/user_reservations">Your Reservations</a></li>
+						<li><a class="menu__link" href="http://127.0.0.1:5000/signup">Sign Up</a></li>
 					{% endif %}
-					        <li><a class="menu__link" href="https://www.dentistomarashraf.tech/about">About</a></li>
+					        <li><a class="menu__link" href="https://github.com/DentistOmarAshraf/CalenDent/blob/master/README.md">About</a></li>
 				</ul>
 			</nav>
 		</header>
