@@ -31,8 +31,11 @@ Make sure you have the following installed:
 ### Installation
 
 This app is worked on WSL: Ubuntu-22.04:
+
 Make Sure from :
+
 	1 - install mysql 8.0.39-0ubuntu0.22.04.1 (Ubuntu)
+	
 	2 - install all dependancies on requirements.txt
 
 Clone the repository:
